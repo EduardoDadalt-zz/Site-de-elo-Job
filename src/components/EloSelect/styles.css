@@ -1,0 +1,44 @@
+.BackgroundBlack {
+  position: absolute;
+  width: 100vw;
+  height: auto;
+  min-height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  overflow-y: scroll;
+  z-index: 999;
+}
+
+
+@media (min-width:992px) {
+  .card-deck>.card {
+    width: 29%;
+    height: 32vh;
+    flex-wrap: wrap;
+    flex: initial;
+  }
+
+  .card-deck>.card .card-img {
+    width: 50%;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+@media (max-width:992px) {
+  .card-deck>.card {
+    height: 24vh;
+    width: 100%;
+    flex-wrap: wrap;
+    flex: initial;
+  }
+
+  .card-deck>.card .card-img {
+    height: 100%;
+    max-width: 50%;
+    width: auto;
+    object-fit: contain;
+  }
+}
