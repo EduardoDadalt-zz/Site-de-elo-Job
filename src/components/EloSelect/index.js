@@ -8,42 +8,11 @@ import {
   Container,
   Row,
 } from "react-bootstrap";
-import bronzeImg from "../../assets/elo/Emblem_Bronze.png";
-import diamondImg from "../../assets/elo/Emblem_Diamond.png";
-import goldImg from "../../assets/elo/Emblem_Gold.png";
-import ironImg from "../../assets/elo/Emblem_Iron.png";
 import masterImg from "../../assets/elo/Emblem_Master.png";
-import platinumImg from "../../assets/elo/Emblem_Platinum.png";
-import silverImg from "../../assets/elo/Emblem_Silver.png";
+
 import "./styles.css";
 
-function EloSelect(props) {
-  var elos = [
-    {
-      title: "Ferro",
-      img: ironImg,
-    },
-    {
-      title: "Bronze",
-      img: bronzeImg,
-    },
-    {
-      title: "Prata",
-      img: silverImg,
-    },
-    {
-      title: "Ouro",
-      img: goldImg,
-    },
-    {
-      title: "Platina",
-      img: platinumImg,
-    },
-    {
-      title: "Diamante",
-      img: diamondImg,
-    },
-  ];
+function EloSelect({ elos, ...props }) {
   if (props.reverse) {
     elos.reverse();
   }
