@@ -111,7 +111,6 @@ function Elojob(props) {
     console.log(modal);
     setModalidade(modal);
   }, [props]);
-
   useEffect(() => {
     if (modalidade == 1 || modalidade == 3)
       setOptions({
@@ -260,6 +259,7 @@ function Elojob(props) {
                     onChange={(e) => {
                       setFilaRanqueada(e.target.value);
                     }}
+                    value={filaRanqueada}
                     defaultValue=""
                   >
                     <option value="" disabled hidden>
