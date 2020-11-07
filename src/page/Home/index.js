@@ -1,11 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Container } from "react-bootstrap";
 
 function Home(props) {
   return (
-    <div>
-      <Link to="/elojob">Elojob</Link>
-    </div>
+    <Container>
+      <h1>Home</h1>
+    </Container>
   );
 }
 export default Home;

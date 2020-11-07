@@ -37,24 +37,32 @@ function EloSelect({ elos, ...props }) {
                     {(() => {
                       let g = [];
                       for (let x = 4; x > 0; x--) {
-                        g.push(
-                          <Button
-                            variant="outline-dark"
-                            key={
-                              "Button:" +
-                              JSON.stringify({ elo: v.title, tier: x })
-                            }
-                            onClick={() => {
-                              props.value({
-                                elo: v.title,
-                                tier: x,
-                                img: v.img,
-                              });
-                            }}
-                          >
-                            {x}
-                          </Button>
-                        );
+                        if (
+                          !(
+                            props.atDiamantFour === true &&
+                            x < 4 &&
+                            v.title === "Diamante"
+                          )
+                        ) {
+                          g.push(
+                            <Button
+                              variant="outline-dark"
+                              key={
+                                "Button:" +
+                                JSON.stringify({ elo: v.title, tier: x })
+                              }
+                              onClick={() => {
+                                props.value({
+                                  elo: v.title,
+                                  tier: x,
+                                  img: v.img,
+                                });
+                              }}
+                            >
+                              {x}
+                            </Button>
+                          );
+                        }
                       }
                       return <ButtonGroup>{g}</ButtonGroup>;
                     })()}

@@ -4,6 +4,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Elojob from "./page/Elojob";
 import Home from "./page/Home";
+import Login from "./page/Login";
 
 function Router() {
   return (
@@ -12,6 +13,7 @@ function Router() {
       <Switch className="fullscreen p-0">
         <Route exact path="/" component={Home} />
         <Route path="/elojob" component={Elojob} />
+        <Route path="/login" component={Login} />
       </Switch>
     </BrowserRouter>
   );

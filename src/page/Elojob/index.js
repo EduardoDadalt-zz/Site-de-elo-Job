@@ -53,7 +53,7 @@ const precoPorTierDuoBoost = {
   platina: 50,
 };
 
-function Elojob() {
+function Elojob(props) {
   //#region Variaveis
   const elos = [
     {
@@ -106,11 +106,12 @@ function Elojob() {
   //#endregion
   useEffect(() => {
     var modal =
-      new URLSearchParams(window.location.search.slice(1)).get("modalidade") ||
+      new URLSearchParams(props.location.search.slice(1)).get("modalidade") ||
       "";
-    setModalidade(modal);
     console.log(modal);
-  }, []);
+    setModalidade(modal);
+  }, [props]);
+
   useEffect(() => {
     if (modalidade == 1 || modalidade == 3)
       setOptions({
@@ -119,22 +120,25 @@ function Elojob() {
         "Selecionar a Rota (+20%)": false,
         "Selecionar o Campeão (+20%)": false,
         "Definir os Horários (+10%)": false,
+        "Estou recebendo menos de 15 de PDL (+40%)": false,
       });
     if (modalidade == 2) {
       if (
-        eloETier.findIndex(
-          (v) => v.elo == eloRequerido.elo && v.tier == eloRequerido.tier
-        )
+        eloETier
+          .slice(0, -4)
+          .every(
+            (v) => v.elo != eloRequerido.elo && v.tier != eloRequerido.tier
+          )
       ) {
         setEloRequerido({
           elo: fraseInicialEloRequerido,
           tier: "",
         });
       }
-
       setOptions({
         "Jogar Com o Duo": "disabled",
         "Selecionar o Horário": true,
+        "Estou recebendo menos de 15 de PDL (+40%)": false,
       });
     }
   }, [modalidade]);
@@ -191,7 +195,9 @@ function Elojob() {
     if (options["Definir os Horários (+10%)"]) {
       preco2 *= 1.1;
     }
-
+    if (options["Estou recebendo menos de 15 de PDL (+40%)"]) {
+      preco2 *= 1.4;
+    }
     setPreco(Math.ceil(preco2));
   }, [modalidade, eloAtual, eloRequerido, partidasAvulsas, options]);
   return (
@@ -210,7 +216,7 @@ function Elojob() {
       )}
       {eloRequeridoSelectWindow && (
         <EloSelect
-          elos={modalidade != 2 ? elos : elos.slice(0, -1)}
+          elos={elos}
           close={() => {
             setEloRequeridoSelectWindow(false);
           }}
@@ -219,14 +225,15 @@ function Elojob() {
             setEloRequeridoSelectWindow(false);
           }}
           highElo={modalidade != 2}
+          atDiamantFour={modalidade == 2}
           reverse
         />
       )}
-      <div className="center fullscreen">
+      <div className="center">
         <Container className="pt-5">
-          <Row className="">
-            <Col className="bg-info text-white border border-dark rounded">
-              <Form>
+          <Form>
+            <Row className="">
+              <Col className="bg-info text-white border border-dark rounded">
                 <Form.Group>
                   <Form.Label>Coloque Seu Elo Atual</Form.Label>
                   <div
@@ -290,108 +297,108 @@ function Elojob() {
                     )}
                   </Form.Control>
                 </Form.Group>
-              </Form>
-            </Col>
-            <Col
-              className={
-                "bg-success border border-dark rounded text-white " +
-                (modalidade === "" && "disable")
-              }
-            >
-              {modalidade > 0 && modalidade < 3 && (
-                <Form>
-                  <Form.Group>
-                    <Form.Label>Elo dos Sonhos</Form.Label>
-                    <div
-                      className="form-control form-control-img"
-                      onClick={() => {
-                        setEloRequeridoSelectWindow(true);
-                      }}
-                    >
-                      {eloRequerido.img && (
-                        <img
-                          src={eloRequerido.img}
-                          alt={eloRequerido.elo + " Imagem"}
-                        />
-                      )}
+              </Col>
+              <Col
+                className={
+                  "bg-success border border-dark rounded text-white " +
+                  (modalidade === "" && "disable")
+                }
+              >
+                {modalidade > 0 && modalidade < 3 && (
+                  <>
+                    <Form.Group>
+                      <Form.Label>Elo dos Sonhos</Form.Label>
+                      <div
+                        className="form-control form-control-img"
+                        onClick={() => {
+                          setEloRequeridoSelectWindow(true);
+                        }}
+                      >
+                        {eloRequerido.img && (
+                          <img
+                            src={eloRequerido.img}
+                            alt={eloRequerido.elo + " Imagem"}
+                          />
+                        )}
 
-                      {eloRequerido.elo + " " + eloRequerido.tier}
-                    </div>
-                  </Form.Group>
-                  <CheckBoxs
-                    options={options}
-                    onChange={(key, value) => {
-                      setOptions({
-                        ...options,
-                        [key]: value,
-                      });
-                    }}
-                  />
-                </Form>
-              )}
-
-              {modalidade == 3 && (
-                <Form>
-                  <Form.Group>
-                    <Form.Label> Quantas partidas? </Form.Label>
-                    <Form.Control
-                      type="number"
-                      max={20}
-                      min={1}
-                      value={partidasAvulsas}
-                      onChange={(e) => {
-                        let value = e.target.value;
-                        if (value > 20) {
-                          value = 20;
-                        }
-                        if (value < 0) {
-                          value = 0;
-                        }
-                        value = Math.floor(value);
-                        setPartidasAvulsas(value);
+                        {eloRequerido.elo + " " + eloRequerido.tier}
+                      </div>
+                    </Form.Group>
+                    <CheckBoxs
+                      options={options}
+                      onChange={(key, value) => {
+                        setOptions({
+                          ...options,
+                          [key]: value,
+                        });
                       }}
-                      placeholder={1}
-                    ></Form.Control>
-                  </Form.Group>
-                  <CheckBoxs
-                    options={options}
-                    onChange={(key, value) => {
-                      setOptions({
-                        ...options,
-                        [key]: value,
-                      });
-                    }}
-                  />
-                </Form>
-              )}
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <h1>
-                {preco.toLocaleString("pt-br", {
-                  style: "currency",
-                  currency: "BRL",
-                })}
-              </h1>
-            </Col>
-            <Col>
-              <Button
-                variant="success"
-                onClick={() => {
-                  /*Place Code for submit
+                    />
+                  </>
+                )}
+
+                {modalidade == 3 && (
+                  <>
+                    <Form.Group>
+                      <Form.Label> Quantas partidas? </Form.Label>
+                      <Form.Control
+                        type="number"
+                        max={20}
+                        min={1}
+                        value={partidasAvulsas}
+                        onChange={(e) => {
+                          let value = e.target.value;
+                          if (value > 20) {
+                            value = 20;
+                          }
+                          if (value < 0) {
+                            value = 0;
+                          }
+                          value = Math.floor(value);
+                          setPartidasAvulsas(value);
+                        }}
+                        placeholder={1}
+                      ></Form.Control>
+                    </Form.Group>
+                    <CheckBoxs
+                      options={options}
+                      onChange={(key, value) => {
+                        setOptions({
+                          ...options,
+                          [key]: value,
+                        });
+                      }}
+                    />
+                  </>
+                )}
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <h1>
+                  {preco.toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </h1>
+              </Col>
+              <Col>
+                <Button
+                  variant="success"
+                  onClick={() => {
+                    /*Place Code for submit
                   if(modalidade>0 &&modalidade <3){
                     {eloAtual,eloRequerido,filaRanqueada}
                   }
                   if(modalidade==3){
                     {eloAtual,partidasAvulsas,filaRanqueada}
                   }*/
-                }}
-              >
-                Confirmar
-              </Button>
-            </Col>
-          </Row>
+                  }}
+                >
+                  Confirmar
+                </Button>
+              </Col>
+            </Row>
+          </Form>
         </Container>
       </div>
     </>
@@ -445,20 +452,26 @@ function CheckBoxs({ options, onChange }) {
   let a = [];
   for (const key in options) {
     a.push(
-      <Form.Check key={key}>
+      <div className="form-check ml-3 mb-1" key={key}>
         <Form.Check.Input
-          key={"Input:" + key}
-          onChange={(e) => {
-            onChange(key, e.target.checked);
-          }}
           checked={
             (typeof options[key] === "boolean" && options[key]) ||
             options[key] === "disabled"
           }
+          onChange={(e) => {
+            onChange(key, e.target.value);
+          }}
           disabled={options[key] === "disabled"}
         ></Form.Check.Input>
-        <Form.Check.Label key={"Label:" + key}>{key}</Form.Check.Label>
-      </Form.Check>
+        <Form.Check.Label
+          className="notSelected"
+          onClick={(e) => {
+            if (options[key] != "disabled") onChange(key, !options[key]);
+          }}
+        >
+          {key}
+        </Form.Check.Label>
+      </div>
     );
   }
   return a;

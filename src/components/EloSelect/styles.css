@@ -1,5 +1,5 @@
 .BackgroundBlack {
-  position: absolute;
+  position: static;
   width: 100vw;
   height: auto;
   min-height: 100%;
