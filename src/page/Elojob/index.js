@@ -9,6 +9,8 @@ import goldImg from "../../assets/elo/Emblem_Gold.png";
 import ironImg from "../../assets/elo/Emblem_Iron.png";
 import platinumImg from "../../assets/elo/Emblem_Platinum.png";
 import silverImg from "../../assets/elo/Emblem_Silver.png";
+import BlackBackground from "../../components/BlackBackground";
+import Header from "../../components/Header";
 const eloETier = [
   { elo: "Ferro", tier: 4 },
   { elo: "Ferro", tier: 3 },
@@ -90,7 +92,7 @@ function Elojob(props) {
     tier: "",
   });
   const [modalidade, setModalidade] = useState("");
-  const [filaRanqueada, setFilaRanqueada] = useState(0);
+  const [filaRanqueada, setFilaRanqueada] = useState("");
   const [eloAtualSelectWindow, setEloAtualSelectWindow] = useState(false);
   const [eloRequerido, setEloRequerido] = useState({
     elo: fraseInicialEloRequerido,
@@ -108,7 +110,6 @@ function Elojob(props) {
     var modal =
       new URLSearchParams(props.location.search.slice(1)).get("modalidade") ||
       "";
-    console.log(modal);
     setModalidade(modal);
   }, [props]);
   useEffect(() => {
@@ -140,6 +141,7 @@ function Elojob(props) {
         "Estou recebendo menos de 15 de PDL (+40%)": false,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalidade]);
   useEffect(() => {
     let preco2 = 0;
@@ -201,32 +203,39 @@ function Elojob(props) {
   }, [modalidade, eloAtual, eloRequerido, partidasAvulsas, options]);
   return (
     <>
+      <Header />
       {eloAtualSelectWindow && (
-        <EloSelect
-          elos={elos}
+        <BlackBackground
           close={() => {
             setEloAtualSelectWindow(false);
           }}
-          value={(value) => {
-            setEloAtual(value);
-            setEloAtualSelectWindow(false);
-          }}
-        />
+        >
+          <EloSelect
+            elos={elos}
+            value={(value) => {
+              setEloAtual(value);
+              setEloAtualSelectWindow(false);
+            }}
+          />
+        </BlackBackground>
       )}
       {eloRequeridoSelectWindow && (
-        <EloSelect
-          elos={elos}
+        <BlackBackground
           close={() => {
             setEloRequeridoSelectWindow(false);
           }}
-          value={(value) => {
-            setEloRequerido(value);
-            setEloRequeridoSelectWindow(false);
-          }}
-          highElo={modalidade != 2}
-          atDiamantFour={modalidade == 2}
-          reverse
-        />
+        >
+          <EloSelect
+            elos={elos}
+            value={(value) => {
+              setEloRequerido(value);
+              setEloRequeridoSelectWindow(false);
+            }}
+            highElo={modalidade != 2}
+            atDiamantFour={modalidade == 2}
+            reverse
+          />
+        </BlackBackground>
       )}
       <div className="center">
         <Container className="pt-5">
@@ -260,7 +269,6 @@ function Elojob(props) {
                       setFilaRanqueada(e.target.value);
                     }}
                     value={filaRanqueada}
-                    defaultValue=""
                   >
                     <option value="" disabled hidden>
                       Selecione a fila Ranqueada:

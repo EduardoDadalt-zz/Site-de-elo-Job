@@ -1,14 +1,18 @@
 import React from "react";
-
-function BlackBackground(props) {
+import "./styles.css";
+const BlackBackground = ({ children, close, ...props }) => {
   return (
     <div
-      className="BackgroundBlack"
+      className="BlackBackground"
       onClick={() => {
-        props.close();
+        if (close) {
+          close();
+        }
       }}
+      {...props}
     >
-      {props.children}
+      {children}
     </div>
   );
-}
+};
+export default BlackBackground;

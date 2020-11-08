@@ -1,36 +1,26 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import fire from "../config/fire";
+import LoginContext from "./loginContext";
 const Auth = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggin, setIsLoggin] = useState(false);
-  const SingIn = (email, pass) => {
-    return fire
-      .auth()
-      .signInWithEmailAndPassword(email, pass)
-      .then((e) => {
-        setIsLoggin(true);
-        return e;
-      });
-  };
+  const { setLoginActive } = useContext(LoginContext);
+  const [isLoggin, setIsLoggin] = useState(!!fire.auth().currentUser);
 
+  fire.auth().onAuthStateChanged((user) => {
+    setIsLoggin(!!user);
+  });
+  useEffect(() => {
+    if (isLoggin === true) setLoginActive(false);
+  }, [isLoggin, setLoginActive]);
+  const SingIn = (email, pass) => {
+    return fire.auth().signInWithEmailAndPassword(email, pass);
+  };
   const SingUp = (email, pass) => {
-    return fire
-      .auth()
-      .createUserWithEmailAndPassword(email, pass)
-      .then((e) => {
-        setIsLoggin(true);
-        return e;
-      });
+    return fire.auth().createUserWithEmailAndPassword(email, pass);
   };
   const SingOut = () => {
-    return fire
-      .auth()
-      .signOut()
-      .then((e) => {
-        setIsLoggin(false);
-        return e;
-      });
+    return fire.auth().signOut();
   };
 
   return (
