@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyBRrdaGNPQhRuioxQZqb79TGIjqfIpUOVk",
   authDomain: "galaxyjobwebsiteelojob.firebaseapp.com",
   databaseURL: "https://galaxyjobwebsiteelojob.firebaseio.com",
@@ -12,6 +12,8 @@ var firebaseConfig = {
   measurementId: "G-M36X7CJBTX",
 };
 
-const fire = firebase.initializeApp(firebaseConfig);
+const fire = !firebase.apps.length
+  ? firebase.initializeApp(firebaseConfig)
+  : firebase.app();
 
 export default fire;

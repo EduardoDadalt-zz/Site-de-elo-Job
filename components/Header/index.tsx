@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { Button, Form, Nav, Navbar, NavDropdown } from "react-bootstrap";
 const Logo = "/logo.jpg";
 import Login from "../Login";
-// import "./styles.css";
 import Link from "next/link";
 function Header() {
   return (

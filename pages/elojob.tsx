@@ -1,11 +1,19 @@
 /* eslint-disable eqeqeq */
-import Image from "next/image";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
+import {
+  Alert,
+  Button,
+  Col,
+  Container,
+  Form,
+  Modal,
+  Row,
+} from "react-bootstrap";
 import EloSelect from "../components/EloSelect";
-import styles from "../styles/elojob.module.css";
 import { eloETier } from "../config/eloETier";
+import styles from "../styles/elojob.module.css";
 const bronzeImg = "/elo/Emblem_Bronze.png";
 const diamondImg = "/elo/Emblem_Diamond.png";
 const goldImg = "/elo/Emblem_Gold.png";
@@ -182,11 +190,15 @@ function Elojob(props) {
   }, [modalidade, eloAtual, eloRequerido, partidasAvulsas, options]);
   return (
     <>
+      <Head>
+        <title>Mande seu EloJob</title>
+      </Head>
       <Modal
         show={eloAtualSelectWindow}
         onHide={() => {
           setEloAtualSelectWindow(false);
         }}
+        contentClassName={styles.transparent}
         dialogClassName={styles.dialog}
       >
         <EloSelect
@@ -202,6 +214,7 @@ function Elojob(props) {
         onHide={() => {
           setEloRequeridoSelectWindow(false);
         }}
+        contentClassName={styles.transparent}
         dialogClassName={styles.dialog}
       >
         <EloSelect
@@ -220,6 +233,7 @@ function Elojob(props) {
           <Form>
             <Row>
               <Col
+                sm
                 className={
                   "bg-info text-white border border-dark rounded " + styles.col
                 }
@@ -292,6 +306,7 @@ function Elojob(props) {
                 </Form.Group>
               </Col>
               <Col
+                sm
                 className={
                   styles.col +
                   " bg-success border border-dark rounded text-white " +
@@ -369,7 +384,7 @@ function Elojob(props) {
                 )}
               </Col>
             </Row>
-            <Row>
+            <Row style={{ alignItems: "center" }}>
               <Col className={styles.col}>
                 <h1>
                   {preco.toLocaleString("pt-br", {
@@ -380,6 +395,7 @@ function Elojob(props) {
               </Col>
               <Col className={styles.col}>
                 <Button
+                  style={{ width: "100%" }}
                   variant="success"
                   onClick={() => {
                     /*Place Code for submit
@@ -463,13 +479,18 @@ function CheckBoxs({ options, onChange }) {
         <Form.Check.Label
           className={styles.notSelected}
           onClick={(e) => {
-            console.log("teste");
-
             if (options[key] != "disabled") onChange(key, !options[key]);
           }}
         >
           {key}
         </Form.Check.Label>
+        {key === "Estou recebendo menos de 15 de PDL (+40%)" && (
+          <Alert variant="warning" style={{ fontSize: "12px" }}>
+            ⚠️ Jogadores que ganham menos de 15 de PDL demandam muitas partidas
+            para que subir de elo. Se você não marcar e estiver o elojob estara
+            cancelado
+          </Alert>
+        )}
       </Form.Check>
     );
   }

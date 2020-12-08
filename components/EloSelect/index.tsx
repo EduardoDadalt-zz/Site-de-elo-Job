@@ -1,13 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  CardColumns,
-  CardDeck,
-  Row,
-} from "react-bootstrap";
+import { Button, ButtonGroup, Card } from "react-bootstrap";
 import styles from "./styles.module.css";
 const masterImg = "/elo/Emblem_Master.png";
 
@@ -74,8 +67,14 @@ function EloSelect({ elos, ...props }) {
 function MasterCard(props) {
   return (
     <Card border="dark" className={styles.card}>
-      <Card.Img src={masterImg} className={styles.image}></Card.Img>
-      <Card.Body>
+      <Card.Img
+        as={Image}
+        src={masterImg}
+        height="150px"
+        width="150px"
+        className={styles.image}
+      ></Card.Img>
+      <Card.Body className={styles.center}>
         <Card.Title>Mestre</Card.Title>
         <Button
           onClick={() => {
