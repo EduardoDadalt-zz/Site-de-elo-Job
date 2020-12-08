@@ -1,0 +1,23 @@
+html,
+body {
+  min-height: 100vh;
+}
+* {
+  padding: 0;
+  margin: 0;
+}
+.logo {
+  height: 2.5rem;
+}
+
+.form-control > img {
+  height: 100%;
+  object-fit: contain;
+}
+
+#root div div.form-control-img {
+  text-align: center;
+  height: calc(5em + 0.75rem + 2px);
+  font-weight: bold;
+  line-height: 5;
+}
