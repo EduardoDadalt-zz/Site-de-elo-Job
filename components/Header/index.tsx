@@ -1,11 +1,15 @@
+import { setupMaster } from "cluster";
 import Link from "next/link";
 import React, { useContext } from "react";
 import { Button, Form, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import fire from "../../config/fire";
 import { Auth } from "../../context/auth";
 import Login from "../Login";
 const Logo = "/logo.jpg";
 function Header() {
-  const { isLoggin, openLoginWindow, setCadastroOn } = useContext(Auth);
+  const { isLoggin, openLoginWindow, setCadastroOn, setUser } = useContext(
+    Auth
+  );
   return (
     <>
       <Navbar
@@ -60,6 +64,17 @@ function Header() {
             <Link href="/pedido">
               <NavDropdown.Item as="a">Meu Pedido</NavDropdown.Item>
             </Link>
+            <NavDropdown.Item
+              as="button"
+              onClick={(e) => {
+                fire
+                  .auth()
+                  .signOut()
+                  .then((e) => setUser(null));
+              }}
+            >
+              Sair
+            </NavDropdown.Item>
           </NavDropdown>
         )}
       </Navbar>

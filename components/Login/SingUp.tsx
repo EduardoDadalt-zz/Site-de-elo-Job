@@ -1,26 +1,31 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import fire from "../../config/fire";
+import { Auth } from "../../context/auth";
 
 const SingUp = () => {
   const router = useRouter();
+  const { setUser } = useContext(Auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [secondPassword, setSecondPassword] = useState("");
-  useEffect(() => {
-    console.log("abcdefgh".includes(password));
-  }, [password]);
+
   return (
     <Form
       onSubmit={(e) => {
         e.preventDefault();
-        if (secondPassword !== password) {
+        if (
+          secondPassword === password &&
+          password.length >= 6 &&
+          password.search(/\W/g) === -1
+        ) {
           fire
             .auth()
             .createUserWithEmailAndPassword(email, password)
             .then((e) => {
-              router.reload();
+              setUser(e.user);
+              router.replace("/register")
             })
             .catch((err) => {});
         }
@@ -45,14 +50,13 @@ const SingUp = () => {
           onChange={(e) => {
             setPassword(e.target.value);
           }}
-          isInvalid={!(password.length >= 6)}
+          isInvalid={!(password.length >= 6 && password.search(/\W/g) === -1)}
           required
         />
         <Form.Control.Feedback type="invalid">
           A senha precisa ter:
-          <ul>
-            <li>Mais de 6 caracteres</li>
-          </ul>
+          <li>Mais de 6 caracteres</li>
+          <li>Só pode ter letras e números</li>
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group>

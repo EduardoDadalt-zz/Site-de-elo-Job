@@ -1,10 +1,11 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import fire from "../../config/fire";
+import { Auth } from "../../context/auth";
 
 const SingIn = () => {
-  const router = useRouter();
+  const { setUser, closeLoginWindow } = useContext(Auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
@@ -15,9 +16,12 @@ const SingIn = () => {
           .auth()
           .signInWithEmailAndPassword(email, password)
           .then((e) => {
-            router.reload();
+            setUser(e.user);
+            closeLoginWindow();
           })
-          .catch((err) => {});
+          .catch((err) => {
+            console.error(err);
+          });
       }}
     >
       <Form.Group>
