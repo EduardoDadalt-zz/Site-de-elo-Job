@@ -23,10 +23,12 @@ const SingIn = () => {
       <Form.Group>
         <Form.Label>E-mail:</Form.Label>
         <Form.Control
+          type="email"
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);
           }}
+          required
         />
       </Form.Group>
       <Form.Group>
@@ -37,6 +39,7 @@ const SingIn = () => {
           onChange={(e) => {
             setPassword(e.target.value);
           }}
+          required
         />
       </Form.Group>
       <Form.Group>

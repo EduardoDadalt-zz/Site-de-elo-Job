@@ -29,6 +29,7 @@ const SingUp = () => {
       <Form.Group>
         <Form.Label>E-mail:</Form.Label>
         <Form.Control
+          type="email"
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);
