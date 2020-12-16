@@ -2,10 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import client from "../../prisma/client";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { name, UserNameLol, PasswordLol, email } = req.body;
+  const { name, UserNameLol, uid, email } = req.body;
   try {
     const user = await client.user.create({
-      data: { name, UserNameLol, PasswordLol, email },
+      data: { name, UserNameLol, email, uid },
     });
     res.send(user.id);
   } catch (e) {
