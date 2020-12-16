@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Galaxy Job🚀</title>
       </Head>
       <section className={styles.section}>
         <Row className="w-100 h-100">
