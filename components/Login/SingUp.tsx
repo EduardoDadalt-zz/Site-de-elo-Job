@@ -25,7 +25,6 @@ const SingUp = () => {
             .createUserWithEmailAndPassword(email, password)
             .then((e) => {
               setUser(e.user);
-              router.replace("/register")
             })
             .catch((err) => {});
         }

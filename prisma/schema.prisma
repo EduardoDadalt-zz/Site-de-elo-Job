@@ -25,11 +25,14 @@ model User {
 //2 - Comcluido
 
 model Elojob {
-  id           Int      @id @default(autoincrement())
-  eloAtual     Int
-  eloRequerido Int
-  creatDate    DateTime @default(now())
-  status       Int      @default(0)
-  author       User     @relation(fields: [authorID], references: [id])
-  authorID     Int
+  id              Int      @id @default(autoincrement())
+  eloAtual        Int
+  eloRequerido    Int?
+  creatDate       DateTime @default(now())
+  status          Int      @default(0)
+  modalidade      Int
+  filaRanqueada   String
+  partidasAvulsas Int?
+  author          User     @relation(fields: [authorID], references: [id])
+  authorID        Int
 }

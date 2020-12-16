@@ -11,9 +11,12 @@ CREATE TABLE "User" (
 CREATE TABLE "Elojob" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "eloAtual" INTEGER NOT NULL,
-    "eloRequerido" INTEGER NOT NULL,
+    "eloRequerido" INTEGER,
     "creatDate" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "status" INTEGER NOT NULL DEFAULT 0,
+    "modalidade" INTEGER NOT NULL,
+    "filaRanqueada" TEXT NOT NULL,
+    "partidasAvulsas" INTEGER,
     "authorID" INTEGER NOT NULL,
 
     FOREIGN KEY ("authorID") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE

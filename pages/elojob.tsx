@@ -398,13 +398,16 @@ function Elojob(props) {
                   style={{ width: "100%" }}
                   variant="success"
                   onClick={() => {
-                    /*Place Code for submit
-                  if(modalidade>0 &&modalidade <3){
-                    {eloAtual,eloRequerido,filaRanqueada}
-                  }
-                  if(modalidade==3){
-                    {eloAtual,partidasAvulsas,filaRanqueada}
-                  }*/
+                    if (
+                      modalidade > 1 &&
+                      modalidade < 3 &&
+                      !!eloAtual &&
+                      !!eloRequerido &&
+                      filaRanqueada
+                    ) {
+                      
+                    } else if (modalidade === 3) {
+                    }
                   }}
                 >
                   Confirmar
