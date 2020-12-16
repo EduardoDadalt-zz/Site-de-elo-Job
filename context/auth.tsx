@@ -6,12 +6,15 @@ interface AuthValues {
   showLoginModal: boolean;
   openLoginWindow: Function;
   closeLoginWindow: Function;
+  cadastroOn: boolean;
+  setCadastroOn: Function;
 }
 export const Auth = createContext<AuthValues | null>(null);
 
 const AuthProvider = ({ children }) => {
   const [isLoggin, setIsLoggin] = useState(!!fire.auth().currentUser);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [cadastroOn, setCadastroOn] = useState(false);
   const openLoginWindow = () => {
     setShowLoginModal(true);
   };
@@ -20,7 +23,14 @@ const AuthProvider = ({ children }) => {
   };
   return (
     <Auth.Provider
-      value={{ isLoggin, showLoginModal, openLoginWindow, closeLoginWindow }}
+      value={{
+        isLoggin,
+        showLoginModal,
+        openLoginWindow,
+        closeLoginWindow,
+        cadastroOn,
+        setCadastroOn,
+      }}
     >
       {children}
     </Auth.Provider>

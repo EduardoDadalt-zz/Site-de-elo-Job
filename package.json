@@ -4,9 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "database:migrateSave": "prisma migrate save --name init --experimental",
-    "database:migrateUp": "prisma migrate up --experimental",
-    "database:migrate": "yarn database:migrateSave && yarn database:migrateUp",
+    "database:migrate": "npx prisma migrate dev --preview-feature",
     "build": "next build",
     "start": "next start"
   },
@@ -20,7 +18,7 @@
     "react-dom": "17.0.1"
   },
   "devDependencies": {
-    "@prisma/cli": "2.12.1",
+    "@prisma/cli": "^2.13.0",
     "@types/node": "^14.14.10",
     "typescript": "^4.1.2"
   }

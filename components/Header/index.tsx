@@ -1,9 +1,11 @@
+import Link from "next/link";
 import React, { useContext } from "react";
 import { Button, Form, Nav, Navbar, NavDropdown } from "react-bootstrap";
-const Logo = "/logo.jpg";
+import { Auth } from "../../context/auth";
 import Login from "../Login";
-import Link from "next/link";
+const Logo = "/logo.jpg";
 function Header() {
+  const { isLoggin, openLoginWindow, setCadastroOn } = useContext(Auth);
   return (
     <>
       <Navbar
@@ -31,6 +33,35 @@ function Header() {
           </Nav>
           <div className="nav navbar-nav navbar-right mr-2"></div>
         </Navbar.Collapse>
+        {!isLoggin ? (
+          <Form inline>
+            <Button
+              onClick={(e) => {
+                setCadastroOn(false);
+                openLoginWindow();
+              }}
+            >
+              Entrar
+            </Button>
+            <Button
+              onClick={(e) => {
+                setCadastroOn(true);
+                openLoginWindow();
+              }}
+            >
+              Cadastrar-se
+            </Button>
+          </Form>
+        ) : (
+          <NavDropdown title="Perfil" id="basic-nav-dropdown">
+            <Link href="/perfil">
+              <NavDropdown.Item as="a">Meu Perfil</NavDropdown.Item>
+            </Link>
+            <Link href="/pedido">
+              <NavDropdown.Item as="a">Meu Pedido</NavDropdown.Item>
+            </Link>
+          </NavDropdown>
+        )}
       </Navbar>
       <Login />
     </>

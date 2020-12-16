@@ -14,9 +14,8 @@ model User {
   id             Int     @id @default(autoincrement())
   email          String  @unique
   name           String
-  token          String
+  uid            String  @unique
   UserNameLol    String
-  PasswordLol    String
   pedidoDeElojob Elojob?
 }
 

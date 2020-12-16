@@ -66,7 +66,7 @@ function EloSelect({ elos, ...props }) {
 
 function MasterCard(props) {
   return (
-    <Card border="dark" className={styles.card}>
+    <Card border="dark" className={styles.card} style={{ height: 306 }}>
       <Card.Img
         as={Image}
         src={masterImg}

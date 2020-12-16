@@ -1,19 +1,30 @@
-import React, { useContext } from "react";
-import { Form, Modal } from "react-bootstrap";
+import React, { useContext, useEffect, useState } from "react";
+import { Modal, Tab, Tabs } from "react-bootstrap";
 import { Auth } from "../../context/auth";
+import SingIn from "./SingIn";
+import SingUp from "./SingUp";
 
 const Login = () => {
-  const { showLoginModal, closeLoginWindow } = useContext(Auth);
-
+  const { showLoginModal, closeLoginWindow, cadastroOn } = useContext(Auth);
+  const [key, setKey] = useState("login");
+  useEffect(() => {
+    setKey(cadastroOn ? "register" : "login");
+  }, [cadastroOn]);
   return (
     <Modal show={showLoginModal} onHide={closeLoginWindow}>
       <Modal.Body>
-        <Form>
-          <Form.Label>E-mail:</Form.Label>
-          <Form.Control />
-          <Form.Label>Senha:</Form.Label>
-          <Form.Control type="password" />
-        </Form>
+        <Tabs
+          id="controlled-tab-example"
+          activeKey={key}
+          onSelect={(k) => setKey(k)}
+        >
+          <Tab eventKey="login" title="Login">
+            <SingIn />
+          </Tab>
+          <Tab eventKey="register" title="Cadastra-se">
+            <SingUp />
+          </Tab>
+        </Tabs>
       </Modal.Body>
     </Modal>
   );
