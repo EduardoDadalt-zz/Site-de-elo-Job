@@ -2,9 +2,11 @@ import { NextApiRequest, NextApiResponse } from "next";
 import client from "../../prisma/client";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { name, UserNameLol, uid, email } = req.body;
+  const { uid, ...data } = req.body;
   try {
-    await client.elojob.create({ data: {} });
+    await client.elojob.create({
+      data: { ...data, author: { connect: { uid } } },
+    });
     res.statusCode = 200;
     res.send("OK");
   } catch (e) {

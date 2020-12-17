@@ -47,14 +47,6 @@ function Header() {
             >
               Entrar
             </Button>
-            <Button
-              onClick={(e) => {
-                setCadastroOn(true);
-                openLoginWindow();
-              }}
-            >
-              Cadastrar-se
-            </Button>
           </Form>
         ) : (
           <NavDropdown title="Perfil" id="basic-nav-dropdown">

@@ -16,4 +16,6 @@ const fire = !firebase.apps.length
   ? firebase.initializeApp(firebaseConfig)
   : firebase.app();
 
+fire.auth().useDeviceLanguage();
+
 export default fire;

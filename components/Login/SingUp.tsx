@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useContext, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import fire from "../../config/fire";
 import { Auth } from "../../context/auth";
@@ -7,22 +7,28 @@ import { Auth } from "../../context/auth";
 const SingUp = () => {
   const router = useRouter();
   const { setUser } = useContext(Auth);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [secondPassword, setSecondPassword] = useState("");
-
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    secondPassword: "",
+    name: "",
+    UserNameLol: "",
+  });
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
   return (
     <Form
       onSubmit={(e) => {
         e.preventDefault();
         if (
-          secondPassword === password &&
-          password.length >= 6 &&
-          password.search(/\W/g) === -1
+          form.secondPassword === form.password &&
+          form.password.length >= 6 &&
+          form.password.search(/\W/g) === -1
         ) {
           fire
             .auth()
-            .createUserWithEmailAndPassword(email, password)
+            .createUserWithEmailAndPassword(form.email, form.password)
             .then((e) => {
               setUser(e.user);
             })
@@ -31,25 +37,45 @@ const SingUp = () => {
       }}
     >
       <Form.Group>
-        <Form.Label>E-mail:</Form.Label>
+        <Form.Label>Seu Nome</Form.Label>
+        <Form.Control
+          type="text"
+          required
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Nick do LoL</Form.Label>
+        <Form.Control
+          type="text"
+          required
+          name="UserNameLol"
+          value={form.UserNameLol}
+          onChange={handleChange}
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>E-mail</Form.Label>
         <Form.Control
           type="email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
+          name="email"
+          value={form.email}
+          onChange={handleChange}
           required
         />
       </Form.Group>
       <Form.Group>
-        <Form.Label>Senha:</Form.Label>
+        <Form.Label>Senha</Form.Label>
         <Form.Control
           type="password"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          isInvalid={!(password.length >= 6 && password.search(/\W/g) === -1)}
+          name="password"
+          value={form.password}
+          onChange={handleChange}
+          isInvalid={
+            !(form.password.length >= 6 && form.password.search(/\W/g) === -1)
+          }
           required
         />
         <Form.Control.Feedback type="invalid">
@@ -59,16 +85,15 @@ const SingUp = () => {
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group>
-        <Form.Label>Confirma a senha: </Form.Label>
+        <Form.Label>Confirma a senha</Form.Label>
         <Form.Control
           type="password"
-          value={secondPassword}
-          onChange={(e) => {
-            setSecondPassword(e.target.value);
-          }}
+          name="secondPassword"
+          value={form.secondPassword}
+          onChange={handleChange}
           required
-          isValid={secondPassword === password}
-          isInvalid={secondPassword !== password}
+          isValid={form.secondPassword === form.password}
+          isInvalid={form.secondPassword !== form.password}
         />
         <Form.Control.Feedback type="invalid">
           Não as senhas não coincidem

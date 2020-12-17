@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -13,6 +13,7 @@ import {
 } from "react-bootstrap";
 import EloSelect from "../components/EloSelect";
 import { eloETier } from "../config/eloETier";
+import { Auth } from "../context/auth";
 import styles from "../styles/elojob.module.css";
 const bronzeImg = "/elo/Emblem_Bronze.png";
 const diamondImg = "/elo/Emblem_Diamond.png";
@@ -38,6 +39,7 @@ const precoPorTierDuoBoost = {
 };
 
 function Elojob(props) {
+  const { isLoggin, openLoginWindow, setCadastroOn } = useContext(Auth);
   const router = useRouter();
   const elos = [
     {
@@ -399,13 +401,21 @@ function Elojob(props) {
                   variant="success"
                   onClick={() => {
                     if (
-                      modalidade > 1 &&
+                      modalidade > 0 &&
                       modalidade < 3 &&
                       !!eloAtual &&
                       !!eloRequerido &&
-                      filaRanqueada
+                      filaRanqueada !== ""
                     ) {
-                      
+                      router.push({
+                        pathname: "/register",
+                        query: {
+                          modalidade,
+                          eloAtual: JSON.stringify(eloAtual),
+                          eloRequerido: JSON.stringify(eloRequerido),
+                          filaRanqueada,
+                        },
+                      });
                     } else if (modalidade === 3) {
                     }
                   }}
