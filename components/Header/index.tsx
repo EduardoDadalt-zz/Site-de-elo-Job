@@ -15,7 +15,7 @@ function Header() {
       <Navbar
         style={{ backgroundColor: "var(--gray-dark)" }}
         variant="dark"
-        expand="md"
+        expand="sm"
       >
         <Link href="/">
           <Navbar.Brand>
@@ -36,39 +36,39 @@ function Header() {
             </Link>
           </Nav>
           <div className="nav navbar-nav navbar-right mr-2"></div>
+          {!isLoggin ? (
+            <Form inline>
+              <Button
+                onClick={(e) => {
+                  setCadastroOn(false);
+                  openLoginWindow();
+                }}
+              >
+                Entrar
+              </Button>
+            </Form>
+          ) : (
+            <NavDropdown title="Perfil" id="basic-nav-dropdown">
+              <Link href="/perfil">
+                <NavDropdown.Item as="a">Meu Perfil</NavDropdown.Item>
+              </Link>
+              <Link href="/pedido">
+                <NavDropdown.Item as="a">Meu Pedido</NavDropdown.Item>
+              </Link>
+              <NavDropdown.Item
+                as="button"
+                onClick={(e) => {
+                  fire
+                    .auth()
+                    .signOut()
+                    .then((e) => setUser(null));
+                }}
+              >
+                Sair
+              </NavDropdown.Item>
+            </NavDropdown>
+          )}
         </Navbar.Collapse>
-        {!isLoggin ? (
-          <Form inline>
-            <Button
-              onClick={(e) => {
-                setCadastroOn(false);
-                openLoginWindow();
-              }}
-            >
-              Entrar
-            </Button>
-          </Form>
-        ) : (
-          <NavDropdown title="Perfil" id="basic-nav-dropdown">
-            <Link href="/perfil">
-              <NavDropdown.Item as="a">Meu Perfil</NavDropdown.Item>
-            </Link>
-            <Link href="/pedido">
-              <NavDropdown.Item as="a">Meu Pedido</NavDropdown.Item>
-            </Link>
-            <NavDropdown.Item
-              as="button"
-              onClick={(e) => {
-                fire
-                  .auth()
-                  .signOut()
-                  .then((e) => setUser(null));
-              }}
-            >
-              Sair
-            </NavDropdown.Item>
-          </NavDropdown>
-        )}
       </Navbar>
       <Login />
     </>

@@ -1,10 +1,10 @@
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import SingUp from "../components/Login/SingUp";
-
 const Register = () => {
   const router = useRouter();
   return (
@@ -17,43 +17,69 @@ const Register = () => {
           rel="stylesheet"
         />
       </Head>
-      <Container>
-        <Row>
+      <Container style={{ maxWidth: "540px" }}>
+        <Row
+          style={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Col>
             {router.query.eloAtual &&
               JSON.parse(String(router.query.eloAtual)).img && (
                 <Image
-                  height={512}
-                  width={585}
+                  width={512}
+                  height={585}
                   layout="responsive"
                   src={JSON.parse(String(router.query.eloAtual)).img}
                   alt="Elo Atual"
                 />
               )}
           </Col>
+          <Col
+            style={{
+              fontFamily: "'Fira Code'",
+              fontWeight: 700,
+              fontSize: 72,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <span>{"=>"}</span>
+          </Col>
           <Col>
-            {router.query.eloAtual &&
-              JSON.parse(String(router.query.eloAtual)).img && (
+            {router.query.eloRequerido &&
+              JSON.parse(String(router.query.eloRequerido)).img && (
                 <Image
-                  height={512}
-                  width={585}
+                  width={512}
+                  height={585}
                   layout="responsive"
-                  src={JSON.parse(String(router.query.eloAtual)).img}
-                  alt="Elo Atual"
+                  src={JSON.parse(String(router.query.eloRequerido)).img}
+                  alt="Elo Requerido"
                 />
               )}
           </Col>
         </Row>
-
-        {/* <Image
-          height={300}
-          width={300}
-          src={JSON.parse(router.query.eloRequerido).img || ""}
-        /> */}
+      </Container>
+      <Container>
         <SingUp />
       </Container>
     </>
   );
 };
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  if (JSON.stringify(context.query) === JSON.stringify({})) {
+    return {
+      redirect: {
+        destination: "/elojob?modalidade=1",
+        permanent: false,
+      },
+    };
+  }
+  return { props: {} };
+};
 export default Register;

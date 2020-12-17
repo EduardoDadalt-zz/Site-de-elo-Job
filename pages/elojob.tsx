@@ -400,12 +400,32 @@ function Elojob(props) {
                   style={{ width: "100%" }}
                   variant="success"
                   onClick={() => {
+                    let eloAtualIndex = eloETier.findIndex(
+                      (f) => f.elo == eloAtual.elo && f.tier == eloAtual.tier
+                    );
+                    let eloRequeridoIndex;
+                    if (!!eloRequerido) {
+                      eloRequeridoIndex = eloETier.findIndex(
+                        (f) =>
+                          f.elo == eloRequerido.elo &&
+                          f.tier == eloRequerido.tier
+                      );
+                    }
+                    console.log({filaRanqueada:!!filaRanqueada});
+                    
+                    console.log({ eloAtualIndex });
+
+                    console.log({eloRequeridoIndex});
+
                     if (
                       modalidade > 0 &&
                       modalidade < 3 &&
                       !!eloAtual &&
                       !!eloRequerido &&
-                      filaRanqueada !== ""
+                      !!filaRanqueada &&
+                      eloAtualIndex !== -1 &&
+                      eloRequeridoIndex !== -1 &&
+                      eloAtualIndex < eloRequeridoIndex
                     ) {
                       router.push({
                         pathname: "/register",
@@ -414,6 +434,7 @@ function Elojob(props) {
                           eloAtual: JSON.stringify(eloAtual),
                           eloRequerido: JSON.stringify(eloRequerido),
                           filaRanqueada,
+                          options: JSON.stringify(options),
                         },
                       });
                     } else if (modalidade === 3) {

@@ -15,7 +15,8 @@ model User {
   email          String  @unique
   name           String
   uid            String  @unique
-  UserNameLol    String
+  UsernameLol    String
+  PasswordLol    String
   pedidoDeElojob Elojob?
 }
 

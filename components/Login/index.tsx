@@ -7,7 +7,7 @@ const Login = () => {
   const { showLoginModal, closeLoginWindow } = useContext(Auth);
 
   return (
-    <Modal show={showLoginModal} onHide={closeLoginWindow}>
+    <Modal show={showLoginModal} onHide={closeLoginWindow} centered>
       <Modal.Body>
         <SingIn />
       </Modal.Body>

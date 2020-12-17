@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
 import React, { ChangeEvent, useContext, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, InputGroup } from "react-bootstrap";
 import fire from "../../config/fire";
 import { Auth } from "../../context/auth";
-
+import Image from "next/image";
+import InputPassword from "../InputPassword";
 const SingUp = () => {
   const router = useRouter();
   const { setUser } = useContext(Auth);
@@ -12,7 +13,8 @@ const SingUp = () => {
     password: "",
     secondPassword: "",
     name: "",
-    UserNameLol: "",
+    UsernameLol: "",
+    PasswordLol: "",
   });
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -51,8 +53,16 @@ const SingUp = () => {
         <Form.Control
           type="text"
           required
-          name="UserNameLol"
-          value={form.UserNameLol}
+          name="UsernameLol"
+          value={form.UsernameLol}
+          onChange={handleChange}
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Senha do LoL</Form.Label>
+        <InputPassword
+          name="PasswordLol"
+          value={form.PasswordLol}
           onChange={handleChange}
         />
       </Form.Group>
@@ -68,7 +78,7 @@ const SingUp = () => {
       </Form.Group>
       <Form.Group>
         <Form.Label>Senha</Form.Label>
-        <Form.Control
+        <InputPassword
           type="password"
           name="password"
           value={form.password}
