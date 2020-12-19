@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import React, { ChangeEvent, useContext, useState } from "react";
-import { Button, Form, InputGroup } from "react-bootstrap";
+import React, { ChangeEvent, memo, useContext, useState } from "react";
+import { Button, Col, Form, InputGroup } from "react-bootstrap";
 import fire from "../../config/fire";
 import { Auth } from "../../context/auth";
 import Image from "next/image";
@@ -48,53 +48,68 @@ const SingUp = () => {
           onChange={handleChange}
         />
       </Form.Group>
-      <Form.Group>
-        <Form.Label>Nick do LoL</Form.Label>
-        <Form.Control
-          type="text"
-          required
-          name="UsernameLol"
-          value={form.UsernameLol}
-          onChange={handleChange}
-        />
-      </Form.Group>
-      <Form.Group>
-        <Form.Label>Senha do LoL</Form.Label>
-        <InputPassword
-          name="PasswordLol"
-          value={form.PasswordLol}
-          onChange={handleChange}
-        />
-      </Form.Group>
-      <Form.Group>
-        <Form.Label>E-mail</Form.Label>
-        <Form.Control
-          type="email"
-          name="email"
-          value={form.email}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
-      <Form.Group>
-        <Form.Label>Senha</Form.Label>
-        <InputPassword
-          type="password"
-          name="password"
-          value={form.password}
-          onChange={handleChange}
-          isInvalid={
-            !(form.password.length >= 6 && form.password.search(/\W/g) === -1)
-          }
-          required
-        />
-        <Form.Control.Feedback type="invalid">
-          A senha precisa ter:
-          <li>Mais de 6 caracteres</li>
-          <li>Só pode ter letras e números</li>
-        </Form.Control.Feedback>
-      </Form.Group>
-      <Form.Group>
+      <Form.Row>
+        <Col>
+          <Form.Group>
+            <Form.Label>Nick do LoL</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              name="UsernameLol"
+              value={form.UsernameLol}
+              onChange={handleChange}
+            />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group>
+            <Form.Label>Senha do LoL</Form.Label>
+            <InputPassword
+              name="PasswordLol"
+              value={form.PasswordLol}
+              onChange={handleChange}
+            />
+          </Form.Group>
+        </Col>
+      </Form.Row>
+
+      <Form.Row>
+        <Col>
+          <Form.Group>
+            <Form.Label>E-mail</Form.Label>
+            <Form.Control
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group>
+            <Form.Label>Senha</Form.Label>
+            <InputPassword
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              isInvalid={
+                !(
+                  form.password.length >= 6 &&
+                  form.password.search(/\W/g) === -1
+                )
+              }
+            />
+            <Form.Control.Feedback type="invalid">
+              A senha precisa ter:
+              <li>Mais de 6 caracteres</li>
+              <li>Só pode ter letras e números</li>
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Col>
+      </Form.Row>
+
+      {/* <Form.Group>
         <Form.Label>Confirma a senha</Form.Label>
         <Form.Control
           type="password"
@@ -108,7 +123,7 @@ const SingUp = () => {
         <Form.Control.Feedback type="invalid">
           Não as senhas não coincidem
         </Form.Control.Feedback>
-      </Form.Group>
+      </Form.Group> */}
       <Form.Group>
         <Button type="submit" variant="primary">
           Cadastrar-se
@@ -118,4 +133,4 @@ const SingUp = () => {
   );
 };
 
-export default SingUp;
+export default memo(SingUp);

@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import SingUp from "../components/Login/SingUp";
+import fire from "../config/fire";
 const Register = () => {
   const router = useRouter();
   return (
@@ -63,6 +64,8 @@ const Register = () => {
               )}
           </Col>
         </Row>
+
+        <Row>{}</Row>
       </Container>
       <Container>
         <SingUp />

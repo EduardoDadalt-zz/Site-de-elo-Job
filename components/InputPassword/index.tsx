@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useState } from "react";
-import { Form, FormControlProps, InputGroup } from "react-bootstrap";
 import Image from "next/image";
+import React, { memo, useState } from "react";
+import { FormControl, FormControlProps, InputGroup } from "react-bootstrap";
 
 interface InputPasswordProps extends FormControlProps {
   children?: React.ReactNode;
@@ -15,7 +15,12 @@ const InputPassword: React.FC<InputPasswordProps> = ({
   const [visible, setVisible] = useState(false);
   return (
     <InputGroup>
-      <Form.Control type="password" name={name} value={value} {...opts} />
+      <FormControl
+        type={visible ? "text" : "password"}
+        name={name}
+        value={value}
+        {...opts}
+      />
       <InputGroup.Append
         onClick={(e) => {
           setVisible(!visible);
@@ -33,4 +38,4 @@ const InputPassword: React.FC<InputPasswordProps> = ({
   );
 };
 
-export default InputPassword;
+export default memo(InputPassword);
