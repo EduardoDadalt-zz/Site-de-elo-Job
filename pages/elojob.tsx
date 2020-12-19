@@ -223,8 +223,11 @@ function Elojob(props) {
           reverse
         />
       </Modal>
-      <div className={styles.center}>
-        <Container className="pt-5">
+      <div
+        className={styles.center}
+        style={{ minHeight: "calc(100vh - 66px)" }}
+      >
+        <Container>
           <Form>
             <Row>
               <Col
@@ -258,6 +261,7 @@ function Elojob(props) {
                 <Form.Group>
                   <Form.Label>Selecione a Sua fila ranqueda</Form.Label>
                   <Form.Control
+                    required
                     as="select"
                     onChange={(e) => {
                       setFilaRanqueada(e.target.value);
@@ -279,6 +283,7 @@ function Elojob(props) {
                 <Form.Group>
                   <Form.Label>Qual a Modalidade</Form.Label>
                   <Form.Control
+                    required
                     as="select"
                     onChange={(e) => {
                       setModalidade(e.target.value);
@@ -348,6 +353,7 @@ function Elojob(props) {
                     <Form.Group>
                       <Form.Label> Quantas partidas? </Form.Label>
                       <Form.Control
+                        required
                         type="number"
                         max={20}
                         min={1}
@@ -428,6 +434,7 @@ function Elojob(props) {
                           eloRequerido: JSON.stringify(eloRequerido),
                           filaRanqueada,
                           options: JSON.stringify(options),
+                          preco,
                         },
                       });
                     } else if (modalidade === 3) {

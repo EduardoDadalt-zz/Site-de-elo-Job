@@ -2,12 +2,24 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import CheckBoxs from "../components/CheckBox";
 import SingUp from "../components/Login/SingUp";
-import fire from "../config/fire";
 const Register = () => {
   const router = useRouter();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    secondPassword: "",
+    name: "",
+    UsernameLol: "",
+    PasswordLol: "",
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
   return (
     <>
       <Head>
@@ -65,10 +77,67 @@ const Register = () => {
           </Col>
         </Row>
 
-        <Row>{}</Row>
+        <Row>
+          <Col>
+            {router.query.options && (
+              <CheckBoxs
+                options={JSON.parse(String(router.query.options))}
+                onChange={() => {}}
+              />
+            )}
+          </Col>
+        </Row>
+        <Row>
+          {router.query.preco && (
+            <Col
+              style={{
+                fontSize: 24,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span>
+                {Number(router.query.preco).toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              </span>
+            </Col>
+          )}
+        </Row>
       </Container>
       <Container>
-        <SingUp />
+        <SingUp
+          form={form}
+          onChange={handleChange}
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (
+              form.secondPassword === form.password &&
+              form.password.length >= 6 &&
+              form.password.search(/\W/g) === -1
+            ) {
+              fire
+                .auth()
+                .createUserWithEmailAndPassword(form.email, form.password)
+                .then((e) => {
+                  setUser(e.user);
+                  const headers = new Headers({});
+                  headers.append("Content-Type", "application/json");
+                  fetch("/api/createUser", {
+                    method: "POST",
+                    credentials: "include",
+                    headers,
+                  })
+                    .then((res) => res.json())
+                    .then((e) => console.log(e));
+                  router.push({ pathname: "/pedido" });
+                })
+                .catch((err) => {});
+            }
+          }}
+        />
       </Container>
     </>
   );
