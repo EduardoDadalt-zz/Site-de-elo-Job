@@ -1,8 +1,5 @@
-import fire from "../../config/fire";
-
 import { GetServerSideProps } from "next";
-import { Container, ListGroup, ListGroupItem, Table } from "react-bootstrap";
-import client from "../../prisma/client";
+import { Container, Table } from "react-bootstrap";
 
 interface listObj {
   id: number;
@@ -35,8 +32,7 @@ const Config: React.FC<ConfigProps> = ({ list }) => {
 
 export default Config;
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await client.elojob.findMany();
-  
+  // const res = await client.elojob.findMany();
   return {
     props: {
       list: [{ id: "1" }],

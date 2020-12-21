@@ -1,5 +1,3 @@
 {
-  "remoteconfig": {
-    "template": "remoteconfig.template.json"
-  }
+  "rulesFile": "database.rules.json"
 }

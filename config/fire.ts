@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-
+import "firebase/database";
 const firebaseConfig = {
   apiKey: "AIzaSyBRrdaGNPQhRuioxQZqb79TGIjqfIpUOVk",
   authDomain: "galaxyjobwebsiteelojob.firebaseapp.com",
@@ -17,5 +17,7 @@ const fire = !firebase.apps.length
   : firebase.app();
 
 fire.auth().useDeviceLanguage();
+
+export const database = fire.database();
 
 export default fire;

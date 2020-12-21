@@ -7,9 +7,8 @@ import { Auth } from "../../context/auth";
 import Login from "../Login";
 const Logo = "/logo.jpg";
 function Header() {
-  const { isLoggin, openLoginWindow, setCadastroOn, setUser } = useContext(
-    Auth
-  );
+  const { openLoginWindow, setCadastroOn, user } = useContext(Auth);
+
   return (
     <>
       <Navbar
@@ -36,7 +35,7 @@ function Header() {
             </Link>
           </Nav>
           <div className="nav navbar-nav navbar-right mr-2"></div>
-          {!isLoggin ? (
+          {!!!user ? (
             <Form inline>
               <Button
                 onClick={(e) => {
@@ -58,10 +57,7 @@ function Header() {
               <NavDropdown.Item
                 as="button"
                 onClick={(e) => {
-                  fire
-                    .auth()
-                    .signOut()
-                    .then((e) => setUser(null));
+                  fire.auth().signOut();
                 }}
               >
                 Sair

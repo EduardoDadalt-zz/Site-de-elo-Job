@@ -3,25 +3,28 @@ import fire from "../config/fire";
 import firebase from "firebase/app";
 
 interface AuthValues {
-  isLoggin: boolean;
+  user: firebase.User | null;
   showLoginModal: boolean;
   openLoginWindow: Function;
   closeLoginWindow: Function;
   cadastroOn: boolean;
   setCadastroOn: Function;
-  user: firebase.User;
   setUser: Function;
 }
 export const Auth = createContext<AuthValues | null>(null);
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(fire.auth().currentUser);
-  const [isLoggin, setIsLoggin] = useState(!!fire.auth().currentUser);
+  const [user, setUser] = useState<firebase.User | null>(
+    fire.auth().currentUser
+  );
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [cadastroOn, setCadastroOn] = useState(false);
   useEffect(() => {
-    setIsLoggin(!!user);
-  }, [user]);
+    fire.auth().onAuthStateChanged((e) => {
+      console.log(e);
+      setUser(e);
+    });
+  }, []);
   const openLoginWindow = () => {
     setShowLoginModal(true);
   };
@@ -31,7 +34,6 @@ const AuthProvider = ({ children }) => {
   return (
     <Auth.Provider
       value={{
-        isLoggin,
         showLoginModal,
         openLoginWindow,
         closeLoginWindow,

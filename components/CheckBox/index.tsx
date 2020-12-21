@@ -2,6 +2,10 @@ import React, { memo } from "react";
 import { Alert, Form } from "react-bootstrap";
 import styles from "../../styles/elojob.module.css";
 
+interface CheckBoxsProps {
+  options: object;
+  onChange: Function;
+}
 const CheckBoxsElement = ({ options, onChange }) => {
   let a = new Array();
   for (const key in options) {

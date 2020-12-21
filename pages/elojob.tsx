@@ -8,31 +8,22 @@ import { eloETier } from "../config/eloETier";
 import { Auth } from "../context/auth";
 import styles from "../styles/elojob.module.css";
 import CheckBoxs from "../components/CheckBox";
+import { getPrice } from "../config/getPrice";
 const bronzeImg = "/elo/Emblem_Bronze.png";
 const diamondImg = "/elo/Emblem_Diamond.png";
 const goldImg = "/elo/Emblem_Gold.png";
 const ironImg = "/elo/Emblem_Iron.png";
 const platinumImg = "/elo/Emblem_Platinum.png";
 const silverImg = "/elo/Emblem_Silver.png";
-const precoPorTier = {
-  ferro: 10,
-  bronze: 15,
-  prata: 20,
-  ouro: 25,
-  platina: 35,
-  diamante: { 4: 70, 3: 80, 2: 90, 1: 100 },
-};
 
-const precoPorTierDuoBoost = {
-  ferro: 15,
-  bronze: 20,
-  prata: 30,
-  ouro: 40,
-  platina: 50,
-};
+import { GetStaticProps } from "next";
+import fetcher from "../config/axios";
 
-function Elojob(props) {
-  const { isLoggin, openLoginWindow, setCadastroOn } = useContext(Auth);
+function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
+  const fraseInicialEloAtual = "Selecione seu Elo",
+    fraseInicialEloRequerido = "Selecione o Elo do Sonho";
+
+  const { openLoginWindow, setCadastroOn } = useContext(Auth);
   const router = useRouter();
   const elos = [
     {
@@ -62,8 +53,6 @@ function Elojob(props) {
   ];
   const [preco, setPreco] = useState(0);
   const [partidasAvulsas, setPartidasAvulsas] = useState(1);
-  const fraseInicialEloAtual = "Selecione seu Elo",
-    fraseInicialEloRequerido = "Selecione o Elo do Sonho";
   const [eloAtual, setEloAtual] = useState({
     elo: fraseInicialEloAtual,
     tier: "",
@@ -126,61 +115,15 @@ function Elojob(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalidade]);
   useEffect(() => {
-    let preco2 = 0;
-    if (eloAtual.elo !== fraseInicialEloAtual) {
-      const eloAtualIndex = eloETier.findIndex(
-        (f) => f.elo == eloAtual.elo && f.tier == eloAtual.tier
-      );
-
-      if (eloRequerido.elo !== fraseInicialEloRequerido) {
-        const eloRequeridoIndex = eloETier.findIndex(
-          (f) => f.elo == eloRequerido.elo && f.tier == eloRequerido.tier
-        );
-
-        if (modalidade == 1) {
-          for (let x = eloAtualIndex; x < eloRequeridoIndex; x++) {
-            let partidas = 7.5;
-            let multipli = SelecionarPorElo(eloETier[x], precoPorTier);
-
-            if (eloETier[x].tier == 1) {
-              partidas += 1;
-            }
-            multipli /= partidas;
-            preco2 += partidas * multipli;
-          }
-        }
-        if (modalidade == 2) {
-          for (let x = eloAtualIndex; x < eloRequeridoIndex; x++) {
-            let partidas = 7.5;
-            let multipli = SelecionarPorElo(eloETier[x], precoPorTierDuoBoost);
-
-            if (eloETier[x].tier == 1) {
-              partidas += 1;
-            }
-            multipli /= partidas;
-            preco2 += partidas * multipli;
-          }
-        }
-      }
-
-      if (modalidade == 3) {
-        let multipli = SelecionarPorElo(eloETier[eloAtualIndex], precoPorTier);
-        preco2 = partidasAvulsas * (multipli / 4);
-      }
-    }
-
-    if (options["Selecionar a Rota (+20%)"]) {
-      preco2 *= 1.2;
-    }
-    if (options["Selecionar o Campeão (+20%)"]) {
-      preco2 *= 1.2;
-    }
-    if (options["Definir os Horários (+10%)"]) {
-      preco2 *= 1.1;
-    }
-    if (options["Estou recebendo menos de 15 de PDL (+40%)"]) {
-      preco2 *= 1.4;
-    }
+    let preco2 = getPrice({
+      eloAtual,
+      modalidade,
+      eloRequerido,
+      options,
+      precoPorTier,
+      precoPorTierDuoBoost,
+      partidasAvulsas,
+    });
     setPreco(Math.ceil(preco2));
   }, [modalidade, eloAtual, eloRequerido, partidasAvulsas, options]);
   return (
@@ -451,48 +394,15 @@ function Elojob(props) {
     </>
   );
 }
-function SelecionarPorElo(eloetier, elos) {
-  let result;
-  switch (eloetier.elo) {
-    case "Ferro":
-      result = elos.ferro;
-      break;
-    case "Bronze":
-      result = elos.bronze;
-      break;
-    case "Prata":
-      result = elos.prata;
-      break;
-    case "Ouro":
-      result = elos.ouro;
-      break;
-    case "Platina":
-      result = elos.platina;
-      break;
-    case "Diamante":
-      if (elos.diamante)
-        switch (eloetier.tier) {
-          case 4:
-            result = elos.diamante[4];
-            break;
-          case 3:
-            result = elos.diamante[3];
-            break;
-          case 2:
-            result = elos.diamante[2];
-            break;
-          case 1:
-            result = elos.diamante[1];
-            break;
-          default:
-            break;
-        }
-      break;
-    default:
-      result = 1;
-      break;
-  }
-  return result;
-}
 
+export const getStaticProps: GetStaticProps = async (context) => {
+  const res = await fetcher("/api/getPrice");
+  const json = res.data;
+  return {
+    props: {
+      ...json,
+    },
+    redirect: 86400,
+  };
+};
 export default Elojob;

@@ -2,24 +2,13 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { ChangeEvent, useState } from "react";
+import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import CheckBoxs from "../components/CheckBox";
-import SingUp from "../components/Login/SingUp";
+import SingUp from "../components/SingUp";
 const Register = () => {
   const router = useRouter();
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-    secondPassword: "",
-    name: "",
-    UsernameLol: "",
-    PasswordLol: "",
-  });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
   return (
     <>
       <Head>
@@ -108,36 +97,7 @@ const Register = () => {
         </Row>
       </Container>
       <Container>
-        <SingUp
-          form={form}
-          onChange={handleChange}
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (
-              form.secondPassword === form.password &&
-              form.password.length >= 6 &&
-              form.password.search(/\W/g) === -1
-            ) {
-              fire
-                .auth()
-                .createUserWithEmailAndPassword(form.email, form.password)
-                .then((e) => {
-                  setUser(e.user);
-                  const headers = new Headers({});
-                  headers.append("Content-Type", "application/json");
-                  fetch("/api/createUser", {
-                    method: "POST",
-                    credentials: "include",
-                    headers,
-                  })
-                    .then((res) => res.json())
-                    .then((e) => console.log(e));
-                  router.push({ pathname: "/pedido" });
-                })
-                .catch((err) => {});
-            }
-          }}
-        />
+        <SingUp />
       </Container>
     </>
   );
