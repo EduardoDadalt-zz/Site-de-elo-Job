@@ -1,24 +1,25 @@
-import React, { useContext, useEffect, useState } from "react";
-import useSWR from "swr";
-import { database } from "../config/fire";
-import { Auth } from "../context/auth";
+import { GetStaticProps } from "next";
 import Image from "next/image";
+import React, { useContext, useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import useSWR from "swr";
 import CheckBoxs from "../components/CheckBox";
-import { eloETier } from "../config/eloETier";
+import fetcher from "../config/axios";
+import { database } from "../config/fire";
 import { getPrice } from "../config/getPrice";
+import { Auth } from "../context/auth";
 import Elojob from "../interface/elojob";
 const getValueDatabase = async (url) => {
   let data = await database
     .ref(url)
     .once("value", (snapshot) => snapshot.val());
 
-  let obj = data.toJSON();
+  let obj = data.toJSON() as Elojob;
 
   return obj;
 };
 
-const Pedido = () => {
+const Pedido = ({ precoPorTierDuoBoost, precoPorTier }) => {
   const { user } = useContext(Auth);
   const [preco, setPreco] = useState(0);
   const { data, error } = useSWR(
@@ -26,7 +27,7 @@ const Pedido = () => {
     getValueDatabase
   );
   useEffect(() => {
-    return setPreco(getPrice({ ...data }));
+    return setPreco(getPrice({ ...data, precoPorTierDuoBoost, precoPorTier }));
   }, [data]);
   if (error) {
     return <div>{JSON.stringify(error, null, 2)}</div>;
@@ -91,4 +92,14 @@ const Pedido = () => {
   );
 };
 
+export const getStaticProps: GetStaticProps = async (context) => {
+  const res = await fetcher("/api/getPrice");
+  const json = res.data;
+  return {
+    props: {
+      ...json,
+    },
+    redirect: 86400,
+  };
+};
 export default Pedido;
