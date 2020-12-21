@@ -7,48 +7,17 @@ import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
 import CheckBoxs from "../components/CheckBox";
 import EloSelect from "../components/EloSelect";
 import { eloETier } from "../config/eloETier";
+import fire from "../config/fire";
 import { getPrice } from "../config/getPrice";
 import { Auth } from "../context/auth";
 import styles from "../styles/elojob.module.css";
-const bronzeImg = "/elo/Emblem_Bronze.png";
-const diamondImg = "/elo/Emblem_Diamond.png";
-const goldImg = "/elo/Emblem_Gold.png";
-const ironImg = "/elo/Emblem_Iron.png";
-const platinumImg = "/elo/Emblem_Platinum.png";
-const silverImg = "/elo/Emblem_Silver.png";
 
 function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
   const fraseInicialEloAtual = "Selecione seu Elo",
     fraseInicialEloRequerido = "Selecione o Elo do Sonho";
-
   const { openLoginWindow, setCadastroOn } = useContext(Auth);
   const router = useRouter();
-  const elos = [
-    {
-      title: "Ferro",
-      img: ironImg,
-    },
-    {
-      title: "Bronze",
-      img: bronzeImg,
-    },
-    {
-      title: "Prata",
-      img: silverImg,
-    },
-    {
-      title: "Ouro",
-      img: goldImg,
-    },
-    {
-      title: "Platina",
-      img: platinumImg,
-    },
-    {
-      title: "Diamante",
-      img: diamondImg,
-    },
-  ];
+
   const [preco, setPreco] = useState(0);
   const [partidasAvulsas, setPartidasAvulsas] = useState(1);
   const [eloAtual, setEloAtual] = useState({
@@ -138,7 +107,7 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
         dialogClassName={styles.dialog}
       >
         <EloSelect
-          elos={elos}
+          elos={eloETier}
           value={(value) => {
             setEloAtual(value);
             setEloAtualSelectWindow(false);
@@ -154,7 +123,7 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
         dialogClassName={styles.dialog}
       >
         <EloSelect
-          elos={elos}
+          elos={eloETier}
           value={(value) => {
             setEloRequerido(value);
             setEloRequeridoSelectWindow(false);
@@ -393,12 +362,23 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-  const res = await fetch("http://localhost:3000/api/getPrice");
-  const json = await res.json();
+export const getStaticProps: GetStaticProps = async (context) => {
+  const precoPorTier = (
+    await fire
+      .database()
+      .ref("precoPorTier")
+      .once("value", (v) => v.val())
+  ).toJSON();
+  const precoPorTierDuoBoost = (
+    await fire
+      .database()
+      .ref("precoPorTierDuoBoost")
+      .once("value", (v) => v.val())
+  ).toJSON();
   return {
     props: {
-      ...json,
+      precoPorTierDuoBoost,
+      precoPorTier,
     },
     redirect: 86400,
   };

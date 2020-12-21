@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import useSWR from "swr";
 import CheckBoxs from "../components/CheckBox";
-import { database } from "../config/fire";
+import fire, { database } from "../config/fire";
 import { getPrice } from "../config/getPrice";
 import { Auth } from "../context/auth";
 import Elojob from "../interface/elojob";
@@ -13,7 +13,7 @@ const getValueDatabase = async (url) => {
     .ref(url)
     .once("value", (snapshot) => snapshot.val());
 
-  let obj = data.toJSON() as Elojob;
+  let obj = data.toJSON();
 
   return obj;
 };
@@ -26,7 +26,13 @@ const Pedido = ({ precoPorTierDuoBoost, precoPorTier }) => {
     getValueDatabase
   );
   useEffect(() => {
-    return setPreco(getPrice({ ...data, precoPorTierDuoBoost, precoPorTier }));
+    return setPreco(
+      getPrice({
+        ...data,
+        precoPorTierDuoBoost,
+        precoPorTier,
+      })
+    );
   }, [data]);
   if (error) {
     return <div>{JSON.stringify(error, null, 2)}</div>;
@@ -91,12 +97,23 @@ const Pedido = ({ precoPorTierDuoBoost, precoPorTier }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
-  const res = await fetch("http://localhost:3000/api/getPrice");
-  const json = await res.json();
+export const getStaticProps: GetStaticProps = async (context) => {
+  const precoPorTier = (
+    await fire
+      .database()
+      .ref("precoPorTier")
+      .once("value", (v) => v.val())
+  ).toJSON();
+  const precoPorTierDuoBoost = (
+    await fire
+      .database()
+      .ref("precoPorTierDuoBoost")
+      .once("value", (v) => v.val())
+  ).toJSON();
   return {
     props: {
-      ...json,
+      precoPorTierDuoBoost,
+      precoPorTier,
     },
     redirect: 86400,
   };

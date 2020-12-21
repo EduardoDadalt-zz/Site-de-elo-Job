@@ -1,6 +1,6 @@
 interface Elojob {
   eloAtual: Elo;
-  modalidade: number;
+  modalidade: number | string;
   eloRequerido?: Elo;
   options: object;
   precoPorTier: object;
@@ -8,9 +8,15 @@ interface Elojob {
   partidasAvulsas?: number;
 }
 
-interface Elo {
+export interface WithPrices extends Elojob {
+  precoPorTier: object;
+  precoPorTierDuoBoost: object;
+}
+
+export interface Elo {
   tier: string;
   elo: string;
   img: string;
 }
+
 export default Elojob;

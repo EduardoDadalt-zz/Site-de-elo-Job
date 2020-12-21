@@ -2,17 +2,9 @@ import { eloETier } from "./eloETier";
 
 const fraseInicialEloAtual = "Selecione seu Elo",
   fraseInicialEloRequerido = "Selecione o Elo do Sonho";
-
+import { WithPrices } from "../interface/elojob";
 interface getPriceObj {
-  (obj: {
-    eloAtual: any;
-    modalidade: any;
-    eloRequerido?: any;
-    options: any;
-    precoPorTier: any;
-    precoPorTierDuoBoost: any;
-    partidasAvulsas?: any;
-  }): number;
+  (obj: WithPrices): number;
 }
 export const getPrice: getPriceObj = ({
   eloAtual,
