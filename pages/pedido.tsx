@@ -4,7 +4,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import useSWR from "swr";
 import CheckBoxs from "../components/CheckBox";
-import fetcher from "../config/axios";
 import { database } from "../config/fire";
 import { getPrice } from "../config/getPrice";
 import { Auth } from "../context/auth";
@@ -92,9 +91,9 @@ const Pedido = ({ precoPorTierDuoBoost, precoPorTier }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const res = await fetcher("/api/getPrice");
-  const json = res.data;
+export const getStaticProps: GetStaticProps = async () => {
+  const res = await fetch("http://localhost:3000/api/getPrice");
+  const json = await res.json();
   return {
     props: {
       ...json,

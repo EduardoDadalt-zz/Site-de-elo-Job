@@ -1,23 +1,21 @@
 /* eslint-disable eqeqeq */
+import { GetStaticProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
+import CheckBoxs from "../components/CheckBox";
 import EloSelect from "../components/EloSelect";
 import { eloETier } from "../config/eloETier";
+import { getPrice } from "../config/getPrice";
 import { Auth } from "../context/auth";
 import styles from "../styles/elojob.module.css";
-import CheckBoxs from "../components/CheckBox";
-import { getPrice } from "../config/getPrice";
 const bronzeImg = "/elo/Emblem_Bronze.png";
 const diamondImg = "/elo/Emblem_Diamond.png";
 const goldImg = "/elo/Emblem_Gold.png";
 const ironImg = "/elo/Emblem_Iron.png";
 const platinumImg = "/elo/Emblem_Platinum.png";
 const silverImg = "/elo/Emblem_Silver.png";
-
-import { GetStaticProps } from "next";
-import fetcher from "../config/axios";
 
 function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
   const fraseInicialEloAtual = "Selecione seu Elo",
@@ -395,9 +393,9 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const res = await fetcher("/api/getPrice");
-  const json = res.data;
+export const getStaticProps: GetStaticProps = async () => {
+  const res = await fetch("http://localhost:3000/api/getPrice");
+  const json = await res.json();
   return {
     props: {
       ...json,
