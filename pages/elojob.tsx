@@ -6,6 +6,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
 import CheckBoxs from "../components/CheckBox";
 import EloSelect from "../components/EloSelect";
+import SingUp from "../components/SingUp";
 import { eloETier } from "../config/eloETier";
 import fire from "../config/fire";
 import { getPrice } from "../config/getPrice";
@@ -15,7 +16,7 @@ import styles from "../styles/elojob.module.css";
 function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
   const fraseInicialEloAtual = "Selecione seu Elo",
     fraseInicialEloRequerido = "Selecione o Elo do Sonho";
-  const { openLoginWindow, setCadastroOn } = useContext(Auth);
+  const { openLoginWindow, openRegisterWindow } = useContext(Auth);
   const router = useRouter();
 
   const [preco, setPreco] = useState(0);
@@ -98,6 +99,10 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
       <Head>
         <title>Mande seu EloJob</title>
       </Head>
+      <SingUp
+        value={{ modalidade, eloAtual, eloRequerido, partidasAvulsas, options }}
+      />
+
       <Modal
         show={eloAtualSelectWindow}
         onHide={() => {
@@ -203,7 +208,7 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
                     <option value="" disabled hidden>
                       Selecione a modalidade:{" "}
                     </option>
-                    {["EloBoost", "DuoBoost", "Vitorias Avulsas"].map(
+                    {["EloBoost", "DuoBoost", "Vitórias Avulsas"].map(
                       (v, x) => {
                         return (
                           <option value={x + 1} key={x + 1}>
@@ -320,12 +325,6 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
                           f.tier == eloRequerido.tier
                       );
                     }
-                    console.log({ filaRanqueada: !!filaRanqueada });
-
-                    console.log({ eloAtualIndex });
-
-                    console.log({ eloRequeridoIndex });
-
                     if (
                       modalidade > 0 &&
                       modalidade < 3 &&
@@ -336,17 +335,7 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
                       eloRequeridoIndex !== -1 &&
                       eloAtualIndex < eloRequeridoIndex
                     ) {
-                      router.push({
-                        pathname: "/register",
-                        query: {
-                          modalidade,
-                          eloAtual: JSON.stringify(eloAtual),
-                          eloRequerido: JSON.stringify(eloRequerido),
-                          filaRanqueada,
-                          options: JSON.stringify(options),
-                          preco,
-                        },
-                      });
+                      openRegisterWindow();
                     } else if (modalidade === 3) {
                     }
                   }}

@@ -7,7 +7,7 @@ import { Auth } from "../../context/auth";
 import Login from "../Login";
 const Logo = "/logo.jpg";
 function Header() {
-  const { openLoginWindow, setCadastroOn, user } = useContext(Auth);
+  const { openLoginWindow, user } = useContext(Auth);
 
   return (
     <>
@@ -27,19 +27,17 @@ function Header() {
             <Link href="/">
               <Nav.Link as="a">Home</Nav.Link>
             </Link>
-            <Link href="/elojob?modalidade=1">
-              <Nav.Link as="a">Elo Booster</Nav.Link>
-            </Link>
-            <Link href="/elojob?modalidade=2">
-              <Nav.Link as="a">Duo Booster</Nav.Link>
-            </Link>
+            {["Elo Booster", "Duo Booster", "Vitórias Avulsas"].map((e, x) => (
+              <Link key={e} href={"/elojob?modalidade=" + (x + 1)}>
+                <Nav.Link as="a">{e}</Nav.Link>
+              </Link>
+            ))}
           </Nav>
           <div className="nav navbar-nav navbar-right mr-2"></div>
           {!!!user ? (
             <Form inline>
               <Button
                 onClick={(e) => {
-                  setCadastroOn(false);
                   openLoginWindow();
                 }}
               >
@@ -48,9 +46,6 @@ function Header() {
             </Form>
           ) : (
             <NavDropdown title="Perfil" id="basic-nav-dropdown">
-              <Link href="/perfil">
-                <NavDropdown.Item as="a">Meu Perfil</NavDropdown.Item>
-              </Link>
               <Link href="/pedido">
                 <NavDropdown.Item as="a">Meu Pedido</NavDropdown.Item>
               </Link>

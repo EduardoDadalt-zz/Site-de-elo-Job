@@ -4,15 +4,16 @@ import { Button, ButtonGroup, Card } from "react-bootstrap";
 import styles from "./styles.module.css";
 
 function EloSelect({ elos, ...props }) {
-  if (props.reverse) {
-    elos.reverse();
-  }
   return (
     <div className={styles.grid}>
       {props.highElo && props.reverse && (
-        <MasterCard elo={elos[0].elo} img={elos[0].img} value={props.value} />
+        <MasterCard
+          elo={elos[elos.length - 1].elo}
+          img={elos[elos.length - 1].img}
+          value={props.value}
+        />
       )}
-      {elos
+      {(props.reverse ? elos.slice().reverse() : elos.slice())
         .filter((f) => f.tier === 1)
         .map(({ img, elo }) => {
           return (

@@ -2,16 +2,7 @@ import Image from "next/image";
 import React, { memo, useState } from "react";
 import { FormControl, FormControlProps, InputGroup } from "react-bootstrap";
 
-interface InputPasswordProps extends FormControlProps {
-  children?: React.ReactNode;
-  name: string;
-  value: string;
-}
-const InputPassword: React.FC<InputPasswordProps> = ({
-  name,
-  value,
-  ...opts
-}) => {
+const InputPassword = ({ name, value, ...opts }) => {
   const [visible, setVisible] = useState(false);
   return (
     <InputGroup>

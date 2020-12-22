@@ -5,11 +5,11 @@ import firebase from "firebase/app";
 interface AuthValues {
   user: firebase.User | null;
   showLoginModal: boolean;
+  cadastroOn: boolean;
   openLoginWindow: Function;
   closeLoginWindow: Function;
-  cadastroOn: boolean;
-  setCadastroOn: Function;
-  setUser: Function;
+  openRegisterWindow: Function;
+  closeRegisterWindow: Function;
 }
 export const Auth = createContext<AuthValues | null>(null);
 
@@ -31,6 +31,12 @@ const AuthProvider = ({ children }) => {
   const closeLoginWindow = () => {
     setShowLoginModal(false);
   };
+  const openRegisterWindow = () => {
+    setCadastroOn(true);
+  };
+  const closeRegisterWindow = () => {
+    setCadastroOn(false);
+  };
   return (
     <Auth.Provider
       value={{
@@ -38,9 +44,9 @@ const AuthProvider = ({ children }) => {
         openLoginWindow,
         closeLoginWindow,
         cadastroOn,
-        setCadastroOn,
         user,
-        setUser,
+        openRegisterWindow,
+        closeRegisterWindow,
       }}
     >
       {children}
