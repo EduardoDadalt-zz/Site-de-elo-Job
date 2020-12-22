@@ -1,15 +1,13 @@
-import { useRouter } from "next/router";
-import React, { ChangeEvent, useContext, useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import React, { ChangeEvent, useContext, useState } from "react";
 import { Alert, Button, Col, Form, Modal } from "react-bootstrap";
+import InputMask from "react-input-mask";
 import fire, { database } from "../../config/fire";
 import { Auth } from "../../context/auth";
 import InputPassword from "../InputPassword";
-import InputMask from "react-input-mask";
-import Image from "next/image";
 
-import Link from "next/link";
 const SingUp = ({ value }) => {
-  const router = useRouter();
   const [logging, setLogging] = useState(false);
   const { cadastroOn, closeRegisterWindow } = useContext(Auth);
   const [form, setForm] = useState({

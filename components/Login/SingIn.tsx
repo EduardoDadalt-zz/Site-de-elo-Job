@@ -5,7 +5,7 @@ import fire from "../../config/fire";
 import { Auth } from "../../context/auth";
 
 const SingIn = () => {
-  const { setUser, closeLoginWindow } = useContext(Auth);
+  const {  closeLoginWindow } = useContext(Auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
@@ -16,7 +16,6 @@ const SingIn = () => {
           .auth()
           .signInWithEmailAndPassword(email, password)
           .then((e) => {
-            setUser(e.user);
             closeLoginWindow();
           })
           .catch((err) => {

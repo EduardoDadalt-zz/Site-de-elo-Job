@@ -21,7 +21,6 @@ const AuthProvider = ({ children }) => {
   const [cadastroOn, setCadastroOn] = useState(false);
   useEffect(() => {
     fire.auth().onAuthStateChanged((e) => {
-      console.log(e);
       setUser(e);
     });
   }, []);
