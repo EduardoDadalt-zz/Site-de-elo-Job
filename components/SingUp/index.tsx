@@ -1,8 +1,10 @@
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React, { ChangeEvent, useContext, useState } from "react";
 import { Alert, Button, Col, Form, Modal } from "react-bootstrap";
 import InputMask from "react-input-mask";
+import { eloETier } from "../../config/eloETier";
 import fire, { database } from "../../config/fire";
 import { Auth } from "../../context/auth";
 import InputPassword from "../InputPassword";
@@ -28,19 +30,19 @@ const SingUp = ({ value }) => {
       password.search(/\W/g) === -1 &&
       whatsapp.slice().replace(/\D/g, "").length === 11
     ) {
-      try {
-        let { user } = await fire
-          .auth()
-          .createUserWithEmailAndPassword(email, password);
-        await database
-          .ref("users/" + user.uid)
-          .set({ PasswordLol, UsernameLol, name, whatsapp });
-        await database.ref("elojob/" + user.uid).set(value);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLogging(true);
-      }
+      let { user } = await fire
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+
+      const token = await user.getIdToken();
+
+      const obj = { value, token, PasswordLol, UsernameLol, name, whatsapp };
+      axios
+        .post("/api/createElojob", obj)
+        .then((e) => setLogging(true))
+        .catch((e) => {
+          console.error(e);
+        });
     }
   };
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

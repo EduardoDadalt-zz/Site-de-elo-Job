@@ -100,7 +100,14 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
         <title>Mande seu EloJob</title>
       </Head>
       <SingUp
-        value={{ modalidade, eloAtual, eloRequerido, partidasAvulsas, options }}
+        value={{
+          modalidade,
+          eloAtual,
+          filaRanqueada,
+          eloRequerido,
+          partidasAvulsas,
+          options,
+        }}
       />
 
       <Modal

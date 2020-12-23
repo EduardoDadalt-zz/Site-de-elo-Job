@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "galaxyjobwebsiteelojob",
+  "private_key_id": "eabb5ec73cc4592534483e182c74070bfd3f5290",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDT+yfXdQlYQ8ye\nowadNcTtMFj1zPJWPdbGbH1lUm53vLTcWDGn4l+M1hKgtXLl/ZC4PIv91N87dkkt\ndGTLVGdB1aK/b9Q3XYiEiQzeg7vs+jcMPrizGbfmigGVrleK0NxqcimPRhmBdVG2\nVxrOtAkg3gTPQWS2f17h50dQIpKYJOpf6uFr148WsMttJEEscm6MVnQZ1y//WKSh\nsEG8FUuAg9BAHQVKNh7LfmvRDu0kR1jM1y9Ob/iXCuMkuiVc7c/Qbz2nNmsYZY1R\nVqziFnnLDja9e7jnMLmT7WJmF4V8rMeN2VqjOwqfNvKPyVWmK2aPejJHkYS8XUrB\nlmqTOcAHAgMBAAECggEARKFR2t3Xcq4wt0OMxqU75pb6lkoOQ4Gt4XwKdR1lCnsc\nCyK6oOIXkV9VlJZqZq/bhOqFYF7lDzlSo9bFM1dWPuhN0rEAAhTUOCSu9/OqiiTQ\nYbSE0+eFtKwFq1JQoW7Rjdz8O5i0dUdodyJoWXfMZMm8wOUpGDTQoU7htb4bvAnQ\nsUoe++2VxFpdsOSJn91ct8igc9CVDVwRxVfyYyxRqisGwizDRms28atp36QX9dht\naKnPR1lNjWBMUctjHcSWhoi5F37vs75xFklqfCgcnbz+OeflEqCqWjzNQY3EJxYF\nZV06zZzTkWimbLWnzR96HPj9nimEgxzGLl3mdGhbMQKBgQDxHd1JGL6b3fZhwpnU\nhHbiWRX5zFRM7PynNsDHF8lqMMhiB3Vi3MgfZtzmc8zeQ3i3t9jACLE3C0XaLvGk\nJcJsLJVlanP3FD+SWVaJVKLVLsdF5vxTONP0rk43QHj46Aa9MXbXETxCaQ9o/JIu\n9/GACWBYuaFLEx/YFsW5+H+IzQKBgQDhEOO5skkFiZBHy8P+U67aom3Ei/8l/HWg\nf5gz1FsSe8MLaq7bKwRKL9RF1xfVqmNnCPyBQoEwOWPdhi7zoNDx2fXjhxrs1EWU\nyqdB0TobT1qbhp/XQcEdqXmH+Pc1PgSmca84/z0AEhnVVAp6vd8VKZ6oHxHCKNOM\nQYJHtKI8IwKBgQCwLzJTB1HAcyBlrtzY/TIhkxcLwNKYo1K6nLegwzDZ92t0th6A\nbvOMfo1Ll7JLduHu3Nf0+mUD46jXFRZc63p1sN45jN/P22vYdI9XKhER1WynF3Gp\nHg1C7VsZ5HKA7op+FHbSEDYIENzBykzHJUXCWRedvYauZPsP2xQAICSQwQKBgBJu\nZqfTcOVyMY2fo0pVohEnkiOxb1C2Dw/4wwcjkd2+oudxciZirHRC3Hhnt/z4ejF6\n6+rN/nRrjsEadwfemJ3lwpxCeTMB4zzfJ7ldIAwSgJISAU8IhH8gXOKEwgHrNUhI\nMRhS1rUFxnXQ7xbEK9u4z9RmzvZ+j2yCBOBIa6zPAoGADxvFr8kih225iymE+Rk7\nxTDEo8uy/LmqBm2b6WG92tu2x63TaaPcV7NgrXbKrb/tSD0dcmjyeYRd3Xbrm0an\nO1cXJL2pv2zmMkB+RrQcb/fml43cd038eLTj+8CBm2aBhqSxQywMv9nhJ/uXrkSY\nAVZxXmu2UOcWv8oSxNpJ4+M=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-w0cw3@galaxyjobwebsiteelojob.iam.gserviceaccount.com",
+  "client_id": "112632223536739897559",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-w0cw3%40galaxyjobwebsiteelojob.iam.gserviceaccount.com"
+}

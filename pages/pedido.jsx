@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Col, Container, Row } from "react-bootstrap";
 import { Auth } from "../context/auth";
 import SingIn from "../components/Login/SingIn";
+import Head from "next/head";
 const getDataFromDatabase = async (url) => {
   return (await database.ref(url).once("value", (e) => e.val())).toJSON();
 };
@@ -28,6 +29,9 @@ const Pedido = () => {
   }
   return (
     <div>
+      <Head>
+        <title>Meu pedido</title>
+      </Head>
       <Row>
         <Col>
           {data && data.eloAtual && data.eloAtual.img && (
@@ -53,5 +57,7 @@ const Pedido = () => {
     </div>
   );
 };
+
+
 
 export default Pedido;
