@@ -2,7 +2,7 @@ var admin = require("firebase-admin");
 
 var serviceAccount = require("./admin.json");
 
-admin = !admin.apps.length
+const FBAdmin = !admin.apps.length
   ? admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
       databaseURL: "https://galaxyjobwebsiteelojob.firebaseio.com",
@@ -10,4 +10,4 @@ admin = !admin.apps.length
   : admin.app();
 
 export const databaseAdmin = admin.database();
-export default admin;
+export default FBAdmin;

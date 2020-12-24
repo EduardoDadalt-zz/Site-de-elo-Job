@@ -4,11 +4,11 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
+import FBAdmin from "../admin/admin";
 import CheckBoxs from "../components/CheckBox";
 import EloSelect from "../components/EloSelect";
 import SingUp from "../components/SingUp";
 import { eloETier } from "../config/eloETier";
-import fire from "../config/fire";
 import { getPrice } from "../config/getPrice";
 import { Auth } from "../context/auth";
 import styles from "../styles/elojob.module.css";
@@ -360,14 +360,12 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const precoPorTier = (
-    await fire
-      .database()
+    await FBAdmin.database()
       .ref("precoPorTier")
       .once("value", (v) => v.val())
   ).toJSON();
   const precoPorTierDuoBoost = (
-    await fire
-      .database()
+    await FBAdmin.database()
       .ref("precoPorTierDuoBoost")
       .once("value", (v) => v.val())
   ).toJSON();

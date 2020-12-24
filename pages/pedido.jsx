@@ -7,7 +7,7 @@ import { Auth } from "../context/auth";
 import SingIn from "../components/Login/SingIn";
 import Head from "next/head";
 const getDataFromDatabase = async (url) => {
-  return (await database.ref(url).once("value", (e) => e.val())).toJSON();
+  return (await fire.database().ref(url).once("value", (e) => e.val())).toJSON();
 };
 
 const Pedido = () => {

@@ -4,8 +4,7 @@ import Link from "next/link";
 import React, { ChangeEvent, useContext, useState } from "react";
 import { Alert, Button, Col, Form, Modal } from "react-bootstrap";
 import InputMask from "react-input-mask";
-import { eloETier } from "../../config/eloETier";
-import fire, { database } from "../../config/fire";
+import fire from "../../config/fire";
 import { Auth } from "../../context/auth";
 import InputPassword from "../InputPassword";
 
@@ -37,6 +36,8 @@ const SingUp = ({ value }) => {
       const token = await user.getIdToken();
 
       const obj = { value, token, PasswordLol, UsernameLol, name, whatsapp };
+      console.log(obj);
+
       axios
         .post("/api/createElojob", obj)
         .then((e) => setLogging(true))

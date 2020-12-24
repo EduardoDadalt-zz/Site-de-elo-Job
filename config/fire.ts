@@ -18,6 +18,4 @@ const fire = !firebase.apps.length
 
 fire.auth().useDeviceLanguage();
 
-export const database = fire.database();
-
 export default fire;
