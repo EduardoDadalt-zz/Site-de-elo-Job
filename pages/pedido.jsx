@@ -43,6 +43,7 @@ const Pedido = () => {
             />
           )}
         </Col>
+        <Col>{"=>"}</Col>
         <Col>
           {data && data.eloRequerido && data.eloRequerido.img && (
             <Image

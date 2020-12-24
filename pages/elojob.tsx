@@ -83,7 +83,7 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalidade]);
   useEffect(() => {
-    let preco2 = getPrice({
+    let price = getPrice({
       eloAtual,
       modalidade,
       eloRequerido,
@@ -92,7 +92,7 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
       precoPorTierDuoBoost,
       partidasAvulsas,
     });
-    setPreco(Math.ceil(preco2));
+    setPreco(price);
   }, [modalidade, eloAtual, eloRequerido, partidasAvulsas, options]);
   return (
     <>

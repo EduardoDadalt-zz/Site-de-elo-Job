@@ -9,5 +9,5 @@ admin = !admin.apps.length
     })
   : admin.app();
 
-export const admindatabase = admin.database();
+export const databaseAdmin = admin.database();
 export default admin;

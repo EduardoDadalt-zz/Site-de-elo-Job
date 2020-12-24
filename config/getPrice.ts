@@ -15,62 +15,46 @@ export const getPrice: getPriceObj = ({
   precoPorTierDuoBoost,
   partidasAvulsas,
 }) => {
-  let preco2 = 0;
-  if (eloAtual.elo !== fraseInicialEloAtual) {
-    const eloAtualIndex = eloETier.findIndex(
-      (f) => f.elo == eloAtual.elo && f.tier == eloAtual.tier
+  let price = 0;
+  const eloAtualIndex = eloETier.findIndex(
+    (f) => f.elo == eloAtual.elo && f.tier == eloAtual.tier
+  );
+  if (eloAtualIndex !== -1 && (modalidade == 1 || modalidade == 2)) {
+    const eloRequeridoIndex = eloETier.findIndex(
+      (f) => f.elo == eloRequerido.elo && f.tier == eloRequerido.tier
     );
 
-    if (eloRequerido.elo !== fraseInicialEloRequerido) {
-      const eloRequeridoIndex = eloETier.findIndex(
-        (f) => f.elo == eloRequerido.elo && f.tier == eloRequerido.tier
+    for (let x = eloAtualIndex; x < eloRequeridoIndex; x++) {
+      let partidas = 7.5;
+      let multipli = SelecionarPorElo(
+        eloETier[x],
+        modalidade == 1 ? precoPorTier : precoPorTierDuoBoost
       );
 
-      if (modalidade == 1) {
-        for (let x = eloAtualIndex; x < eloRequeridoIndex; x++) {
-          let partidas = 7.5;
-          let multipli = SelecionarPorElo(eloETier[x], precoPorTier);
-
-          if (eloETier[x].tier == 1) {
-            partidas += 1;
-          }
-          multipli /= partidas;
-          preco2 += partidas * multipli;
-        }
+      if (eloETier[x].tier == 1) {
+        partidas += 1;
       }
-      if (modalidade == 2) {
-        for (let x = eloAtualIndex; x < eloRequeridoIndex; x++) {
-          let partidas = 7.5;
-          let multipli = SelecionarPorElo(eloETier[x], precoPorTierDuoBoost);
-
-          if (eloETier[x].tier == 1) {
-            partidas += 1;
-          }
-          multipli /= partidas;
-          preco2 += partidas * multipli;
-        }
-      }
+      multipli /= partidas;
+      price += partidas * multipli;
     }
-
-    if (modalidade == 3) {
-      let multipli = SelecionarPorElo(eloETier[eloAtualIndex], precoPorTier);
-      preco2 = partidasAvulsas * (multipli / 4);
-    }
+  } else if (eloAtualIndex !== -1 && modalidade == 3) {
+    let multipli = SelecionarPorElo(eloETier[eloAtualIndex], precoPorTier);
+    price = partidasAvulsas * (multipli / 4);
   }
-
   if (options["Selecionar a Rota (+20%)"]) {
-    preco2 *= 1.2;
+    price *= 1.2;
   }
   if (options["Selecionar o Campeão (+20%)"]) {
-    preco2 *= 1.2;
+    price *= 1.2;
   }
   if (options["Definir os Horários (+10%)"]) {
-    preco2 *= 1.1;
+    price *= 1.1;
   }
   if (options["Estou recebendo menos de 15 de PDL (+40%)"]) {
-    preco2 *= 1.4;
+    price *= 1.4;
   }
-  return preco2;
+
+  return Math.ceil(price);
 };
 function SelecionarPorElo(eloetier, elos) {
   let result;
