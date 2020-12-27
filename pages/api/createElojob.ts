@@ -7,7 +7,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (VerifiqueTodosOsCampos(req.body)) {
-    console.log("Entrou 2");
     try {
       let { uid } = await FBAdmin.auth().verifyIdToken(req.body.token);
       const precoPorTier = (
@@ -60,7 +59,6 @@ function VerifiqueTodosOsCampos(body: any) {
       options,
       filaRanqueada,
     } = value;
-    console.log("Entrou 1");
     const eloAtualIndex =
       eloAtual && eloAtual.elo && eloAtual.tier
         ? eloETier.findIndex(

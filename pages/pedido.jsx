@@ -7,19 +7,26 @@ import { Auth } from "../context/auth";
 import SingIn from "../components/Login/SingIn";
 import Head from "next/head";
 const getDataFromDatabase = async (url) => {
-  return (await fire.database().ref(url).once("value", (e) => e.val())).toJSON();
+  return (
+    await fire
+      .database()
+      .ref(url)
+      .once("value", (e) => e.val())
+  ).toJSON();
 };
 
 const Pedido = () => {
-  const {user} = useContext(Auth)
+  const { user } = useContext(Auth);
   const { data, error } = useSWR(
-    "/elojob" + (user&&user.uid),
+    "elojob/" + (user && user.uid),
     getDataFromDatabase
   );
-  if(!user){
-    return <Container>
-      <SingIn/>
-    </Container>
+  if (!user) {
+    return (
+      <Container>
+        <SingIn />
+      </Container>
+    );
   }
   if (error) {
     return <div>Deu Erro...</div>;
@@ -32,33 +39,43 @@ const Pedido = () => {
       <Head>
         <title>Meu pedido</title>
       </Head>
-      <Row>
-        <Col>
-          {data && data.eloAtual && data.eloAtual.img && (
-            <Image
-              width={512}
-              height={585}
-              layout="responsive"
-              src={data.eloAtual.img}
-            />
-          )}
-        </Col>
-        <Col>{"=>"}</Col>
-        <Col>
-          {data && data.eloRequerido && data.eloRequerido.img && (
-            <Image
-              width={512}
-              height={585}
-              layout="responsive"
-              src={data.eloRequerido.img}
-            />
-          )}
-        </Col>
-      </Row>
+      <Container>
+        <Row>
+          <Col>
+            {data && data.eloAtual && data.eloAtual.img && (
+              <Image
+                width={512}
+                height={585}
+                layout="responsive"
+                src={data.eloAtual.img}
+              />
+            )}
+          </Col>
+          <Col>{"=>"}</Col>
+          <Col>
+            {data && data.eloRequerido && data.eloRequerido.img && (
+              <Image
+                width={512}
+                height={585}
+                layout="responsive"
+                src={data.eloRequerido.img}
+              />
+            )}
+          </Col>
+        </Row>
+      </Container>
+      <Container className="d-flex align-items-center justify-content-center">
+        <div>
+          {data &&
+            data.price &&
+            Number(data.price).toLocaleString("pt-br", {
+              style: "currency",
+              currency: "BRL",
+            })}
+        </div>
+      </Container>
     </div>
   );
 };
-
-
 
 export default Pedido;

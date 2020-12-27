@@ -1,4 +1,3 @@
-import { setupMaster } from "cluster";
 import Link from "next/link";
 import React, { useContext } from "react";
 import { Button, Form, Nav, Navbar, NavDropdown } from "react-bootstrap";
@@ -11,11 +10,7 @@ function Header() {
 
   return (
     <>
-      <Navbar
-        style={{ backgroundColor: "var(--gray-dark)" }}
-        variant="dark"
-        expand="sm"
-      >
+      <Navbar variant="light" expand="sm">
         <Link href="/">
           <Navbar.Brand>
             <img src={Logo} className="logo rounded" alt="logo" /> Galaxy Job

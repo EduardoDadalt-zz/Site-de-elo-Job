@@ -151,9 +151,9 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
       >
         <Container>
           <Form>
-            <Row>
+            <Row className="justify-content-around">
               <Col
-                sm
+                sm={5}
                 className={
                   "bg-info text-white border border-dark rounded " + styles.col
                 }
@@ -228,7 +228,7 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
                 </Form.Group>
               </Col>
               <Col
-                sm
+                sm={5}
                 className={
                   styles.col +
                   " bg-success border border-dark rounded text-white " +
