@@ -1,20 +1,12 @@
 import React, { useContext } from "react";
 import useSWR from "swr";
-import fire, { database } from "../config/fire";
+import { database } from "../config/fire";
 import Image from "next/image";
 import { Col, Container, Row } from "react-bootstrap";
 import { Auth } from "../context/auth";
 import SingIn from "../components/Login/SingIn";
 import Head from "next/head";
-const getDataFromDatabase = async (url) => {
-  return (
-    await fire
-      .database()
-      .ref(url)
-      .once("value", (e) => e.val())
-  ).toJSON();
-};
-
+import { getDataFromDatabase } from "../utils/getDataFromDatabase";
 const Pedido = () => {
   const { user } = useContext(Auth);
   const { data, error } = useSWR(

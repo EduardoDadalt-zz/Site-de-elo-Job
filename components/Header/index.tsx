@@ -1,10 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import React, { useContext } from "react";
 import { Button, Form, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import fire from "../../config/fire";
 import { Auth } from "../../context/auth";
 import Login from "../Login";
-const Logo = "/logo.jpg";
 function Header() {
   const { openLoginWindow, user } = useContext(Auth);
 
@@ -12,8 +12,16 @@ function Header() {
     <>
       <Navbar variant="light" expand="sm">
         <Link href="/">
-          <Navbar.Brand>
-            <img src={Logo} className="logo rounded" alt="logo" /> Galaxy Job
+          <Navbar.Brand className="d-flex justify-content-center align-items-center">
+            <Image
+              src="/logo.jpg"
+              height={40}
+              width={40}
+              // layout="responsive"
+              className="rounded"
+              alt="logo"
+            />
+            Galaxy Job
           </Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -32,6 +40,7 @@ function Header() {
           {!!!user ? (
             <Form inline>
               <Button
+                variant="outline-dark"
                 onClick={(e) => {
                   openLoginWindow();
                 }}
@@ -40,7 +49,11 @@ function Header() {
               </Button>
             </Form>
           ) : (
-            <NavDropdown title="Perfil" id="basic-nav-dropdown">
+            <NavDropdown
+              className="btn btn-outline-dark p-0"
+              title={user.displayName}
+              id="basic-nav-dropdown"
+            >
               <Link href="/pedido">
                 <NavDropdown.Item as="a">Meu Pedido</NavDropdown.Item>
               </Link>

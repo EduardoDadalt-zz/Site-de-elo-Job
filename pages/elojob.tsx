@@ -14,6 +14,7 @@ import { Auth } from "../context/auth";
 import styles from "../styles/elojob.module.css";
 
 function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
+  //#region Variables
   const fraseInicialEloAtual = "Selecione seu Elo",
     fraseInicialEloRequerido = "Selecione o Elo do Sonho";
   const { openLoginWindow, openRegisterWindow } = useContext(Auth);
@@ -149,11 +150,11 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
         className={styles.center}
         style={{ minHeight: "calc(100vh - 66px)" }}
       >
-        <Container>
+        <Container fluid="xl">
           <Form>
             <Row className="justify-content-around">
               <Col
-                sm={5}
+                md={5}
                 className={
                   "bg-info text-white border border-dark rounded " + styles.col
                 }
@@ -228,7 +229,7 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
                 </Form.Group>
               </Col>
               <Col
-                sm={5}
+                md={5}
                 className={
                   styles.col +
                   " bg-success border border-dark rounded text-white " +

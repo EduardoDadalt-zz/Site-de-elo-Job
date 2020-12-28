@@ -29,9 +29,26 @@ export default async function handler(
         res.statusCode = 400;
         return res.end();
       }
+      let {
+        modalidade,
+        eloAtual,
+        eloRequerido,
+        partidasAvulsas,
+        options,
+        filaRanqueada,
+      } = req.body.value;
       await FBAdmin.database()
         .ref("elojob/" + uid)
-        .set({ ...req.body.value, price });
+        .set({
+          modalidade,
+          eloAtual,
+          eloRequerido,
+          partidasAvulsas,
+          options,
+          filaRanqueada,
+          status: "Em Análise",
+          price,
+        });
       const { PasswordLol, UsernameLol, name, whatsapp } = req.body;
 
       await FBAdmin.database()
@@ -42,11 +59,11 @@ export default async function handler(
       return res.send("OK");
     } catch (error) {
       res.statusCode = 400;
-      return res.end();
+      return res.send("Deu Erro :C");
     }
   }
   res.statusCode = 400;
-  return res.end();
+  return res.send("Deu Erro :C");
 }
 function VerifiqueTodosOsCampos(body: any) {
   const { token, PasswordLol, UsernameLol, name, whatsapp, value } = body;

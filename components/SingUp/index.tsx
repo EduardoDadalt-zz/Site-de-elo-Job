@@ -20,30 +20,30 @@ const SingUp = ({ value }) => {
     whatsapp: "",
   });
 
-  const [error, setError] = useState("eaea");
+  const [error, setError] = useState("");
   const onSubmit = async (e) => {
     e.preventDefault();
     const { email, name, PasswordLol, UsernameLol, password, whatsapp } = form;
+    setError("");
     if (
       password.length >= 6 &&
       password.search(/\W/g) === -1 &&
       whatsapp.slice().replace(/\D/g, "").length === 11
     ) {
-      let { user } = await fire
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
+      try {
+        let { user } = await fire
+          .auth()
+          .createUserWithEmailAndPassword(email, password);
+        user.updateProfile({ displayName: name });
+        const token = await user.getIdToken();
 
-      const token = await user.getIdToken();
+        const obj = { value, token, PasswordLol, UsernameLol, name, whatsapp };
 
-      const obj = { value, token, PasswordLol, UsernameLol, name, whatsapp };
-      console.log(obj);
-
-      axios
-        .post("/api/createElojob", obj)
-        .then((e) => setLogging(true))
-        .catch((e) => {
-          console.error(e);
-        });
+        await axios.post("/api/createElojob", obj);
+        setLogging(true);
+      } catch (e) {
+        if (e.message) setError(e.message);
+      }
     }
   };
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
