@@ -2,11 +2,12 @@ import React, { useContext } from "react";
 import useSWR from "swr";
 import { database } from "../config/fire";
 import Image from "next/image";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
 import { Auth } from "../context/auth";
 import SingIn from "../components/Login/SingIn";
 import Head from "next/head";
 import { getDataFromDatabase } from "../utils/getDataFromDatabase";
+import CheckBoxs from "../components/CheckBox";
 const Pedido = () => {
   const { user } = useContext(Auth);
   const { data, error } = useSWR(
@@ -21,20 +22,31 @@ const Pedido = () => {
     );
   }
   if (error) {
-    return <div>Deu Erro...</div>;
+    return (
+      <Container>
+        <Alert variant="danger">Algo deu Errado :C</Alert>
+      </Container>
+    );
   }
   if (!data) {
-    return <Container>Carregando...</Container>;
+    return (
+      <Container className="center">
+        <Spinner animation="border" />
+      </Container>
+    );
   }
   return (
     <div>
       <Head>
         <title>Meu pedido</title>
       </Head>
+      <Container className="center">
+        <h1>Status: {data && data.status && data.status}</h1>
+      </Container>
       <Container>
         <Row>
           <Col>
-            {data && data.eloAtual && data.eloAtual.img && (
+            {data?.eloAtual?.img && (
               <Image
                 width={512}
                 height={585}
@@ -45,7 +57,7 @@ const Pedido = () => {
           </Col>
           <Col>{"=>"}</Col>
           <Col>
-            {data && data.eloRequerido && data.eloRequerido.img && (
+            {data?.eloRequerido?.img && (
               <Image
                 width={512}
                 height={585}
@@ -56,15 +68,18 @@ const Pedido = () => {
           </Col>
         </Row>
       </Container>
+      <Container>
+        <CheckBoxs options={data.options} onChange={() => {}} />
+      </Container>
       <Container className="d-flex align-items-center justify-content-center">
-        <div>
+        <h1>
           {data &&
             data.price &&
             Number(data.price).toLocaleString("pt-br", {
               style: "currency",
               currency: "BRL",
             })}
-        </div>
+        </h1>
       </Container>
     </div>
   );

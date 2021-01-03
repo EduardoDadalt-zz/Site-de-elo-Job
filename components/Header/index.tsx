@@ -21,7 +21,7 @@ function Header() {
               className="rounded"
               alt="logo"
             />
-            Galaxy Job
+            <Navbar.Text>Galaxy Job</Navbar.Text>
           </Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

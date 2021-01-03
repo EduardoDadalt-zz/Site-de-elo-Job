@@ -15,6 +15,11 @@ body {
   object-fit: contain;
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 #root div div.form-control-img {
   text-align: center;
   height: calc(5em + 0.75rem + 2px);

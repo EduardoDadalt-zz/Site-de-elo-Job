@@ -1,9 +1,20 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Container, Form, Row, Table } from "react-bootstrap";
+import {
+  Alert,
+  Button,
+  Container,
+  Form,
+  Modal,
+  Row,
+  Spinner,
+  Table,
+} from "react-bootstrap";
 import Image from "next/image";
 import useSWR from "swr";
+import Head from "next/head";
+import CheckBoxs from "../../components/CheckBox";
 
 interface listObj {
   id: number;
@@ -21,6 +32,9 @@ const Config: React.FC<ConfigProps> = ({ list }) => {
   const { data, error } = useSWR("/api/getElojob");
   const [modalidade, setModalidade] = useState<number>(1);
   const [elojob, setElojob] = useState([]);
+  const [modalShow, setModalShow] = useState(false);
+  const [modalOptions, setModalOptions] = useState({});
+
   useEffect(() => {
     if (data) {
       for (const key in data) {
@@ -32,81 +46,131 @@ const Config: React.FC<ConfigProps> = ({ list }) => {
   }, [data]);
   if (error) {
     router.push("/");
-    return <div>Erro</div>;
+    return (
+      <Container>
+        <Alert variant="danger">Algo deu Errado :C</Alert>
+      </Container>
+    );
   }
   if (!data) {
-    return <Container>Carregando...</Container>;
+    return (
+      <Container className="center">
+        <Spinner animation="border" />
+      </Container>
+    );
   }
 
   return (
-    <Container fluid="xl">
-      <Form.Group>
-        <Form.Label>Modalidade</Form.Label>
-        <Form.Control
-          as="select"
-          custom
-          value={modalidade}
-          onChange={(e) => setModalidade(Number(e.target.value))}
-        >
-          {["EloBoost", "DuoBoost", "Vitórias Avulsas"].map((e, x) => (
-            <option key={"option" + x} value={x + 1}>
-              {e}
-            </option>
-          ))}
-        </Form.Control>
-      </Form.Group>
-      <Table>
-        <thead>
-          <tr>
-            <th>Preço</th>
-            <th>Elo Atual</th>
-            <th>Elo Requerido</th>
-          </tr>
-        </thead>
-        <tbody>
-          {elojob
-            // .filter((f) => f.modalidade == modalidade)
-            .map((e) => (
-              <tr key={e.key}>
-                <td key={"price:" + e.key}>
-                  {Number(e.price).toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
-                </td>
-                <td key={"eloAtual:" + e.key}>
-                  <div className="d-flex align-items-center">
-                    <Image
-                      src={e.eloAtual.img}
-                      height={30}
-                      width={30}
-                      objectFit="cover"
-                    />
-                    <span>{e.eloAtual.elo + " " + e.eloAtual.tier}</span>
-                  </div>
-                </td>
-                <td key={"eloRequerido:" + e.key}>
-                  <div className="d-flex align-items-center">
-                    {e.eloRequerido && (
-                      <>
-                        <Image
-                          src={e.eloRequerido.img}
-                          height={30}
-                          width={30}
-                          objectFit="cover"
-                        />
-                        <span>
-                          {e.eloRequerido.elo + " " + e.eloRequerido.tier}
-                        </span>
-                      </>
-                    )}
-                  </div>
-                </td>
-              </tr>
+    <>
+      <Head>
+        <title>Tabela</title>
+      </Head>
+      <Modal
+        show={modalShow}
+        onHide={() => {
+          setModalShow(false);
+        }}
+        centered
+      >
+        <Modal.Body>
+          <CheckBoxs options={modalOptions} onChange={() => {}} />
+        </Modal.Body>
+      </Modal>
+      <Container fluid="xl">
+        <Form.Group>
+          <Form.Label>Modalidade</Form.Label>
+          <Form.Control
+            as="select"
+            custom
+            value={modalidade}
+            onChange={(e) => setModalidade(Number(e.target.value))}
+          >
+            {["EloBoost", "DuoBoost", "Vitórias Avulsas"].map((e, x) => (
+              <option key={"option" + x} value={x + 1}>
+                {e}
+              </option>
             ))}
-        </tbody>
-      </Table>
-    </Container>
+          </Form.Control>
+        </Form.Group>
+        <Table>
+          <thead>
+            <tr>
+              <th>Preço</th>
+              <th>Elo Atual</th>
+              <th>
+                {modalidade == 1 || modalidade == 2
+                  ? "Elo Requerido"
+                  : "Vitórias Avulsas"}
+              </th>
+              <th>Opções</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {elojob
+              // .filter((f) => f.modalidade == modalidade)
+              .map((e) => (
+                <tr key={e.key}>
+                  <td key={"price:" + e.key}>
+                    {Number(e.price).toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </td>
+                  <td key={"eloAtual:" + e.key}>
+                    <div className="d-flex align-items-center">
+                      <Image
+                        src={e.eloAtual.img}
+                        height={30}
+                        width={30}
+                        objectFit="cover"
+                      />
+                      <span>{e.eloAtual.elo + " " + e.eloAtual.tier}</span>
+                    </div>
+                  </td>
+                  <td key={"eloRequerido:" + e.key}>
+                    <div className="d-flex align-items-center">
+                      {e.eloRequerido && (
+                        <>
+                          <Image
+                            src={e.eloRequerido.img}
+                            height={30}
+                            width={30}
+                            objectFit="cover"
+                          />
+                          <span>
+                            {e.eloRequerido.elo + " " + e.eloRequerido.tier}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </td>
+                  <td>
+                    <Button
+                      variant="outline-dark"
+                      onClick={() => {
+                        setModalOptions(e.options);
+                        setModalShow(true);
+                      }}
+                    >
+                      Opções
+                    </Button>
+                  </td>
+                  <td key={"status:" + e.key}>
+                    <Form.Control as="select" defaultValue={e.status} custom>
+                      {["Em Análise", "Em Andamento", "Concluído"].map((f) => (
+                        <option key={e.key + f} value={f}>
+                          {f}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </Table>
+      </Container>
+    </>
   );
 };
 

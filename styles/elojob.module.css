@@ -4,9 +4,6 @@
   align-items: center;
 }
 
-.disable {
-  display: none;
-}
 
 .col {
   height: min-content;

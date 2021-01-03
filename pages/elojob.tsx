@@ -13,7 +13,7 @@ import { getPrice } from "../config/getPrice";
 import { Auth } from "../context/auth";
 import styles from "../styles/elojob.module.css";
 
-function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
+function Elojob({ precoPorTierDuoBoost, precoPorTier, champions }) {
   //#region Variables
   const fraseInicialEloAtual = "Selecione seu Elo",
     fraseInicialEloRequerido = "Selecione o Elo do Sonho";
@@ -108,6 +108,7 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
           eloRequerido,
           partidasAvulsas,
           options,
+          champions,
         }}
       />
 
@@ -156,13 +157,16 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
               <Col
                 md={5}
                 className={
-                  "bg-info text-white border border-dark rounded " + styles.col
+                  "bg-secondary text-white border border-dark rounded " +
+                  styles.col
                 }
               >
                 <Form.Group>
                   <Form.Label>Coloque Seu Elo Atual</Form.Label>
                   <div
-                    className={"form-control " + styles.formImg}
+                    className={
+                      "form-control " + styles.formImg + " btn btn-light"
+                    }
                     onClick={() => {
                       setEloAtualSelectWindow(true);
                     }}
@@ -228,85 +232,102 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
                   </Form.Control>
                 </Form.Group>
               </Col>
-              <Col
-                md={5}
-                className={
-                  styles.col +
-                  " bg-success border border-dark rounded text-white " +
-                  (modalidade === "" && styles.disable)
-                }
-              >
-                {modalidade > 0 && modalidade < 3 && (
-                  <>
-                    <Form.Group>
-                      <Form.Label>Elo dos Sonhos</Form.Label>
-                      <div
-                        className={"form-control " + styles.formImg}
-                        onClick={() => {
-                          setEloRequeridoSelectWindow(true);
-                        }}
-                      >
-                        {eloRequerido.img && (
-                          <img
-                            className={styles.img}
-                            src={eloRequerido.img}
-                            height="100%"
-                            width="min-width"
-                            alt={eloRequerido.elo + " Imagem"}
-                          />
-                        )}
+              {modalidade > 0 && modalidade < 4 && (
+                <Col
+                  md={1}
+                  style={{
+                    fontSize: "4em",
+                  }}
+                  className="d-flex justify-content-center"
+                >
+                  <span style={{ textShadow: "1px 1px 1px black" }}>🚀</span>
+                </Col>
+              )}
 
-                        {eloRequerido.elo + " " + eloRequerido.tier}
-                      </div>
-                    </Form.Group>
-                    <CheckBoxs
-                      options={options}
-                      onChange={(key, value) => {
-                        setOptions({
-                          ...options,
-                          [key]: value,
-                        });
+              {modalidade > 0 && modalidade < 3 && (
+                <Col
+                  md={5}
+                  className={
+                    styles.col +
+                    " bg-success border border-dark rounded text-white "
+                  }
+                >
+                  <Form.Group>
+                    <Form.Label>Elo dos Sonhos</Form.Label>
+                    <div
+                      className={
+                        "form-control " + styles.formImg + " btn btn-light"
+                      }
+                      onClick={() => {
+                        setEloRequeridoSelectWindow(true);
                       }}
-                    />
-                  </>
-                )}
+                    >
+                      {eloRequerido.img && (
+                        <img
+                          className={styles.img}
+                          src={eloRequerido.img}
+                          height="100%"
+                          width="min-width"
+                          alt={eloRequerido.elo + " Imagem"}
+                        />
+                      )}
 
-                {modalidade == 3 && (
-                  <>
-                    <Form.Group>
-                      <Form.Label> Quantas partidas? </Form.Label>
-                      <Form.Control
-                        required
-                        type="number"
-                        max={20}
-                        min={1}
-                        value={partidasAvulsas}
-                        onChange={(e) => {
-                          let value = Number(e.target.value);
-                          if (value > 20) {
-                            value = 20;
-                          }
-                          if (value < 0) {
-                            value = 0;
-                          }
-                          value = Math.floor(value);
-                          setPartidasAvulsas(value);
-                        }}
-                        placeholder="1"
-                      ></Form.Control>
-                    </Form.Group>
-                    <CheckBoxs
-                      options={options}
-                      onChange={(key, value) => {
-                        setOptions({
-                          ...options,
-                          [key]: value,
-                        });
+                      {eloRequerido.elo + " " + eloRequerido.tier}
+                    </div>
+                  </Form.Group>
+                  <CheckBoxs
+                    options={options}
+                    onChange={(key, value) => {
+                      setOptions({
+                        ...options,
+                        [key]: value,
+                      });
+                    }}
+                  />
+                </Col>
+              )}
+
+              {modalidade == 3 && (
+                <Col
+                  md={5}
+                  className={
+                    styles.col +
+                    " bg-sucess border border-dark rounded text-white"
+                  }
+                >
+                  <Form.Group>
+                    <Form.Label> Quantas partidas? </Form.Label>
+                    <Form.Control
+                      required
+                      type="number"
+                      max={20}
+                      min={1}
+                      value={partidasAvulsas}
+                      onChange={(e) => {
+                        let value = Number(e.target.value);
+                        if (value > 20) {
+                          value = 20;
+                        }
+                        if (value < 0) {
+                          value = 0;
+                        }
+                        value = Math.floor(value);
+                        setPartidasAvulsas(value);
                       }}
-                    />
-                  </>
-                )}
-              </Col>
+                      placeholder="1"
+                    ></Form.Control>
+                  </Form.Group>
+                  <CheckBoxs
+                    options={options}
+                    onChange={(key, value) => {
+                      setOptions({
+                        ...options,
+                        [key]: value,
+                      });
+                    }}
+                  />
+                </Col>
+              )}
             </Row>
             <Row style={{ alignItems: "center" }}>
               <Col className={styles.col}>
@@ -360,20 +381,51 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier }) {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const precoPorTier = (
-    await FBAdmin.database()
-      .ref("precoPorTier")
-      .once("value", (v) => v.val())
-  ).toJSON();
-  const precoPorTierDuoBoost = (
-    await FBAdmin.database()
-      .ref("precoPorTierDuoBoost")
-      .once("value", (v) => v.val())
-  ).toJSON();
+  const promisePrecoPorTier = FBAdmin.database()
+    .ref("precoPorTier")
+    .once("value", (v) => v.val())
+    .then((e) => e.toJSON());
+
+  const promisePrecoPorTierDuoBoost = FBAdmin.database()
+    .ref("precoPorTierDuoBoost")
+    .once("value", (v) => v.val())
+    .then((e) => e.toJSON());
+
+  const promiseChampions = fetch(
+    "https://ddragon.leagueoflegends.com/api/versions.json",
+    {
+      method: "GET",
+    }
+  )
+    .then((res) => res.json())
+    .then((array) =>
+      fetch(
+        "http://ddragon.leagueoflegends.com/cdn/" +
+          array[0] +
+          "/data/pt_BR/champion.json",
+        { method: "GET" }
+      )
+    )
+    .then((e) => e.json())
+    .then((championList) => {
+      let arr = [];
+      for (const key in championList.data) {
+        arr.push(championList.data[key].name);
+      }
+      return arr;
+    });
+
+  const array = await Promise.all([
+    promisePrecoPorTier,
+    promisePrecoPorTierDuoBoost,
+    promiseChampions,
+  ]);
+
   return {
     props: {
-      precoPorTierDuoBoost,
-      precoPorTier,
+      precoPorTier: array[0],
+      precoPorTierDuoBoost: array[1],
+      champions: array[2],
     },
     redirect: 86400,
   };

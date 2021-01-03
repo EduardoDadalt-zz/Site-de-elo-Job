@@ -19,11 +19,19 @@ const SingUp = ({ value }) => {
     PasswordLol: "",
     whatsapp: "",
   });
-
+  const [options, setOptions] = useState({});
   const [error, setError] = useState("");
   const onSubmit = async (e) => {
     e.preventDefault();
-    const { email, name, PasswordLol, UsernameLol, password, whatsapp } = form;
+    const {
+      email,
+      name,
+      PasswordLol,
+      UsernameLol,
+      password,
+      whatsapp,
+      ...opts
+    } = form;
     setError("");
     if (
       password.length >= 6 &&
@@ -37,7 +45,15 @@ const SingUp = ({ value }) => {
         user.updateProfile({ displayName: name });
         const token = await user.getIdToken();
 
-        const obj = { value, token, PasswordLol, UsernameLol, name, whatsapp };
+        const obj = {
+          ...opts,
+          value,
+          token,
+          PasswordLol,
+          UsernameLol,
+          name,
+          whatsapp,
+        };
 
         await axios.post("/api/createElojob", obj);
         setLogging(true);
@@ -152,14 +168,77 @@ const SingUp = ({ value }) => {
                     required
                     autoComplete="no"
                   />
-                  <Alert variant="warning">
-                    Sua senha será usada para o elo boost. Recomendamos que você
-                    mude sua senha antes{" "}
-                  </Alert>
                 </Form.Group>
               </Col>
+              <Alert variant="warning">
+                Sua senha será usada para o elo boost. Recomendamos que você
+                mude sua senha antes{" "}
+              </Alert>
             </Form.Row>
-
+            {(value.options["Selecionar o Campeão (+20%)"] ||
+              value.options["Definir os Horários (+10%)"] ||
+              value.options["Selecionar a Rota (+20%)"]) && (
+              <Form.Group className="border rounded border-dark p-3">
+                <h5>Selecione as Opções</h5>
+                {value.options["Selecionar o Campeão (+20%)"] && (
+                  <>
+                    <Form.Label>Selecione seu campeão</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="Selecionar o Campeão (+20%)"
+                      onChange={onChange}
+                      required
+                      custom
+                    >
+                      {value.champions.map((e) => (
+                        <option key={e} value={e}>
+                          {e}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  </>
+                )}
+                {value.options["Selecionar a Rota (+20%)"] && (
+                  <>
+                    <Form.Label>Selecione a Rota</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="Selecionar a Rota (+20%)"
+                      onChange={onChange}
+                      required
+                    >
+                      {["Top", "Jungle", "Mid", "ADC", "Suporte"].map((e) => (
+                        <option key={e} value={e}>
+                          {e}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  </>
+                )}
+                {value.options["Definir os Horários (+10%)"] && (
+                  <Form.Row>
+                    <Col>
+                      <Form.Label>Hora Inicial: </Form.Label>
+                      <Form.Control
+                        type="time"
+                        name="HoraInicio"
+                        onChange={onChange}
+                        required
+                      />
+                    </Col>
+                    <Col>
+                      <Form.Label>Hora Final: </Form.Label>
+                      <Form.Control
+                        type="time"
+                        name="HoraFinal"
+                        onChange={onChange}
+                        required
+                      />
+                    </Col>
+                  </Form.Row>
+                )}
+              </Form.Group>
+            )}
             <Form.Group>
               <Button type="submit" variant="primary" style={{ width: "100%" }}>
                 Confirmar
