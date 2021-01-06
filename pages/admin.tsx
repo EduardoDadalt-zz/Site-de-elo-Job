@@ -14,7 +14,7 @@ import {
 import Image from "next/image";
 import useSWR from "swr";
 import Head from "next/head";
-import CheckBoxs from "../../components/CheckBox";
+import CheckBoxs from "../components/CheckBox";
 
 interface listObj {
   id: number;

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { Button, Col, Container, Jumbotron, Row } from "react-bootstrap";
+import { Button, Card, CardDeck, Col, Container, Row } from "react-bootstrap";
 import styles from "../styles/home.module.css";
 export default function Home() {
   const router = useRouter();
@@ -9,38 +9,93 @@ export default function Home() {
     <>
       <Head>
         <title>Galaxy Job🚀</title>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap"
+          rel="stylesheet"
+        />
       </Head>
-      <section className={styles.section + " " + styles.backgroundSpace}>
-        <Container className="w-100 h-100">
-          <Row className="w-100 h-100 text-light">
-            <Col>
-              <Image
-                src="/teste.gif"
-                layout="fill"
-                className={styles.rocketImg}
-              />
-            </Col>
-            <Col>Turbine seu elo</Col>
-          </Row>
-        </Container>
+      <section
+        className={
+          styles.section + " position-relative " + styles.backgroundSpace
+        }
+      >
+        <Image
+          src="/bg.gif"
+          layout="fill"
+          objectFit="cover"
+          objectPosition="50% 50%"
+        />
+        <Row className="w-100 h-100 position-relative text-white">
+          <Col></Col>
+          <Col
+            sm={4}
+            className="d-flex justify-content-center align-items-center"
+          >
+            <h1
+              style={{ fontFamily: "Roboto", textShadow: "1px 1px 1px black" }}
+              className="font-weight-bold"
+            >
+              Turbine seu Elo
+            </h1>
+          </Col>
+        </Row>
       </section>
-      <section className={styles.section}>
-        <Jumbotron>
-          <Container>
-            <h1>Encomenda agora seu elo job</h1>
-            <p>A equipe mais confiavel de elo job do Brasil</p>
-            <p>
-              <Button
-                onClick={() => {
-                  router.push("/elojob");
-                }}
-              >
-                Peça já
-              </Button>
-            </p>
-          </Container>
-        </Jumbotron>
+      <section>
+        <Container className="my-4">
+          <CardDeck>
+            {[
+              {
+                title: "Elo Boost",
+                text: "adsakdalskdmaslkdamslkdma",
+                src: "/icons/user.svg",
+              },
+              {
+                title: "Duo Boost",
+                text: "adsakdalskdmaslkdamslkdma",
+                src: "/icons/users.svg",
+              },
+              {
+                title: "Vitórias Avulsas",
+                text: "adsakdalskdmaslkdamslkdma",
+                src: "/icons/chevrons-up.svg",
+              },
+            ].map((e, x) => (
+              <CardPlan card={{ ...e, index: x }} />
+            ))}
+          </CardDeck>
+        </Container>
       </section>
     </>
   );
 }
+
+const CardPlan = ({ card }) => {
+  const router = useRouter();
+  return (
+    <Card>
+      <Card.Header>
+        <h4 className="text-center font-weight-bold">{card.title}</h4>
+      </Card.Header>
+      <Card.Img
+        as={Image}
+        src={card.src}
+        height={100}
+        width={100}
+        variant="top"
+      />
+      <Card.Body>
+        <Card.Text>{card.text}</Card.Text>
+        <Button
+          onClick={() => {
+            router.push("/elojob?modalidade=" + (card.index + 1));
+          }}
+          className="btn-block"
+          variant="primary"
+        >
+          Peça já
+        </Button>
+      </Card.Body>
+    </Card>
+  );
+};

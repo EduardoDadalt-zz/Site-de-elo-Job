@@ -66,16 +66,12 @@ const SingUp = ({ value }) => {
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+  const onHide = () => {
+    setForm(formStart);
+    closeRegisterWindow();
+  };
   return (
-    <Modal
-      show={cadastroOn}
-      onHide={(e) => {
-        setForm(formStart);
-        closeRegisterWindow();
-      }}
-      centered
-      size="lg"
-    >
+    <Modal show={cadastroOn} onHide={onHide} centered size="lg">
       <Modal.Header closeButton>
         <h1>Cadastra-se</h1>
       </Modal.Header>
