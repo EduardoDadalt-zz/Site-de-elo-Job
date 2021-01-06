@@ -154,9 +154,9 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier, champions }) {
               <Col
                 md={5}
                 className={
-                  "bg-secondary text-white border border-dark rounded " +
-                  styles.col
+                  "text-white border border-dark rounded " + styles.col
                 }
+                style={{ backgroundColor: "var(--blue)" }}
               >
                 <Form.Group>
                   <Form.Label>Coloque Seu Elo Atual</Form.Label>
@@ -246,9 +246,9 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier, champions }) {
                 <Col
                   md={5}
                   className={
-                    styles.col +
-                    " bg-success border border-dark rounded text-white "
+                    styles.col + " border border-dark rounded text-white "
                   }
+                  style={{ backgroundColor: "var(--indigo)" }}
                 >
                   <Form.Group>
                     <Form.Label>Elo dos Sonhos</Form.Label>
@@ -289,9 +289,9 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier, champions }) {
                 <Col
                   md={5}
                   className={
-                    styles.col +
-                    " bg-success border border-dark rounded text-white"
+                    styles.col + " border border-dark rounded text-white"
                   }
+                  style={{ backgroundColor: "var(--indigo)" }}
                 >
                   <Form.Group>
                     <Form.Label> Quantas partidas? </Form.Label>
@@ -338,7 +338,7 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier, champions }) {
               </Col>
               <Col className={styles.col}>
                 <Button
-                  style={{ width: "100%" }}
+                  className="btn-block"
                   variant="success"
                   onClick={() => {
                     let eloAtualIndex = eloETier.findIndex(
