@@ -290,7 +290,7 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier, champions }) {
                   md={5}
                   className={
                     styles.col +
-                    " bg-sucess border border-dark rounded text-white"
+                    " bg-success border border-dark rounded text-white"
                   }
                 >
                   <Form.Group>
