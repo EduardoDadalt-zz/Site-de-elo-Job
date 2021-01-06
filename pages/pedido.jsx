@@ -43,7 +43,7 @@ const Pedido = () => {
       <Container className="center">
         <h1>Status: {data && data.status && data.status}</h1>
       </Container>
-      <Container>
+      <Container style={{ maxWidth: "var(--breakpoint-sm)" }}>
         <Row>
           <Col>
             {data?.eloAtual?.img && (
@@ -56,7 +56,7 @@ const Pedido = () => {
             )}
           </Col>
           <Col
-            style={{ fontSize: "12vw" }}
+            style={{ fontSize: "4rem" }}
             className="d-flex justify-content-center align-items-center"
           >
             <span>🚀</span>
