@@ -47,17 +47,17 @@ export default function Home() {
             {[
               {
                 title: "Elo Boost",
-                text: "adsakdalskdmaslkdamslkdma",
+                text: "Subiremos seu Elo",
                 src: "/icons/user.svg",
               },
               {
                 title: "Duo Boost",
-                text: "adsakdalskdmaslkdamslkdma",
+                text: "Um membro da nossa equipe ajudaram você a subir de Elo",
                 src: "/icons/users.svg",
               },
               {
                 title: "Vitórias Avulsas",
-                text: "adsakdalskdmaslkdamslkdma",
+                text: "Ganharemos partidas para você",
                 src: "/icons/chevrons-up.svg",
               },
             ].map((e, x) => (
