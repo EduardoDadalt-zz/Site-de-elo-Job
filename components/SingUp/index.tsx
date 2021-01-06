@@ -168,12 +168,12 @@ const SingUp = ({ value }) => {
                     required
                     autoComplete="no"
                   />
+                  <Alert variant="warning">
+                    Sua senha será usada para o elo boost. Recomendamos que você
+                    mude sua senha antes{" "}
+                  </Alert>
                 </Form.Group>
               </Col>
-              <Alert variant="warning">
-                Sua senha será usada para o elo boost. Recomendamos que você
-                mude sua senha antes{" "}
-              </Alert>
             </Form.Row>
             {(value.options["Selecionar o Campeão (+20%)"] ||
               value.options["Definir os Horários (+10%)"] ||
