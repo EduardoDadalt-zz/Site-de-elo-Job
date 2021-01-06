@@ -147,10 +147,7 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier, champions }) {
           reverse
         />
       </Modal>
-      <div
-        className={styles.center}
-        style={{ minHeight: "calc(100vh - 66px)" }}
-      >
+      <div>
         <Container fluid="xl">
           <Form>
             <Row className="justify-content-around">
@@ -194,6 +191,7 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier, champions }) {
                       setFilaRanqueada(e.target.value);
                     }}
                     value={filaRanqueada}
+                    isInvalid={filaRanqueada === ""}
                   >
                     <option value="" disabled hidden>
                       Selecione a fila Ranqueada:
