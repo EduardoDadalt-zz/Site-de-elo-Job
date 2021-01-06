@@ -55,7 +55,12 @@ const Pedido = () => {
               />
             )}
           </Col>
-          <Col>{"=>"}</Col>
+          <Col
+            style={{ fontSize: "12vw" }}
+            className="d-flex justify-content-center align-items-center"
+          >
+            <span>🚀</span>
+          </Col>
           <Col>
             {data?.eloRequerido?.img && (
               <Image
