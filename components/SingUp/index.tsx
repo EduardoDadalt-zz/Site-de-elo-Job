@@ -11,14 +11,15 @@ import InputPassword from "../InputPassword";
 const SingUp = ({ value }) => {
   const [logging, setLogging] = useState(false);
   const { cadastroOn, closeRegisterWindow } = useContext(Auth);
-  const [form, setForm] = useState({
+  const formStart = {
     email: "",
     password: "",
     name: "",
     UsernameLol: "",
     PasswordLol: "",
     whatsapp: "",
-  });
+  };
+  const [form, setForm] = useState(formStart);
   const [options, setOptions] = useState({});
   const [error, setError] = useState("");
   const onSubmit = async (e) => {
@@ -69,6 +70,7 @@ const SingUp = ({ value }) => {
     <Modal
       show={cadastroOn}
       onHide={(e) => {
+        setForm(formStart);
         closeRegisterWindow();
       }}
       centered
