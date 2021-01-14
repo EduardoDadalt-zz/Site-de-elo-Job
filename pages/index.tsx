@@ -26,6 +26,7 @@ export default function Home() {
             objectPosition: "50% 50%",
             width: "100%",
             height: "100%",
+            position: "absolute",
           }}
         />
         <Row className="w-100 h-100 position-relative text-white">
@@ -35,7 +36,10 @@ export default function Home() {
             className="d-flex justify-content-center align-items-center"
           >
             <h1
-              style={{ fontFamily: "Roboto", textShadow: "1px 1px 1px black" }}
+              style={{
+                fontFamily: "Roboto",
+                textShadow: "1px 1px 1px black",
+              }}
               className="font-weight-bold"
             >
               Turbine seu Elo
