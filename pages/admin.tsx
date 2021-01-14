@@ -1,4 +1,6 @@
 import axios from "axios";
+import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {
@@ -7,13 +9,10 @@ import {
   Container,
   Form,
   Modal,
-  Row,
   Spinner,
-  Table,
+  Table
 } from "react-bootstrap";
-import Image from "next/image";
 import useSWR from "swr";
-import Head from "next/head";
 import CheckBoxs from "../components/CheckBox";
 
 interface listObj {

@@ -1,13 +1,12 @@
-import React, { useContext } from "react";
-import useSWR from "swr";
-import { database } from "../config/fire";
-import Image from "next/image";
-import { Col, Container, Row, Spinner } from "react-bootstrap";
-import { Auth } from "../context/auth";
-import SingIn from "../components/Login/SingIn";
 import Head from "next/head";
-import { getDataFromDatabase } from "../utils/getDataFromDatabase";
+import Image from "next/image";
+import React, { useContext } from "react";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
+import useSWR from "swr";
 import CheckBoxs from "../components/CheckBox";
+import SingIn from "../components/Login/SingIn";
+import { Auth } from "../context/auth";
+import { getDataFromDatabase } from "../utils/getDataFromDatabase";
 const Pedido = () => {
   const { user } = useContext(Auth);
   const { data, error } = useSWR(
