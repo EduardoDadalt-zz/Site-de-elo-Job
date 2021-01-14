@@ -19,12 +19,22 @@ export default function Home() {
           styles.section + " position-relative " + styles.backgroundSpace
         }
       >
-        <Image
+        {/* <Image
           src="/bg.gif"
           objectFit="cover"
           objectPosition="50% 50%"
           layout="fill"
           quality={100}
+        /> */}
+        <img
+          src="/bg.gif"
+          style={{
+            objectFit: "cover",
+            objectPosition: "50% 50%",
+            height: "100%",
+            width: "100%",
+            position: "absolute",
+          }}
         />
         <Row className="w-100 h-100 position-relative text-white">
           <Col></Col>
@@ -64,7 +74,7 @@ export default function Home() {
                 src: "/icons/chevrons-up.svg",
               },
             ].map((e, x) => (
-              <CardPlan card={{ ...e, index: x }} />
+              <CardPlan key={"CardPlan:" + x} card={{ ...e, index: x }} />
             ))}
           </CardDeck>
         </Container>

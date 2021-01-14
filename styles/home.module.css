@@ -3,12 +3,12 @@
   width: 100%;
 }
 
-.backgroundSpace {
+/* .backgroundSpace {
   background: linear-gradient(to bottom, transparent 95%, white),
     url("/background.jpg");
   background-size: cover;
   background-position: auto, 50% 50%;
-}
+} */
 .rocketImg {
   transform: rotate(40deg);
 }
