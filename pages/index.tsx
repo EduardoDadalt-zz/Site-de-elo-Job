@@ -24,6 +24,8 @@ export default function Home() {
           style={{
             objectFit: "cover",
             objectPosition: "50% 50%",
+            width: "100%",
+            height: "100%",
           }}
         />
         <Row className="w-100 h-100 position-relative text-white">
