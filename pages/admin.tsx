@@ -2,7 +2,7 @@ import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -10,10 +10,11 @@ import {
   Form,
   Modal,
   Spinner,
-  Table
+  Table,
 } from "react-bootstrap";
 import useSWR from "swr";
 import CheckBoxs from "../components/CheckBox";
+import { Auth } from "../context/auth";
 
 interface listObj {
   id: number;
@@ -23,12 +24,14 @@ interface ConfigProps {
 }
 
 const fetcher = async (url: string) => {
-  return (await axios.get(url)).data;
+  const { user } = useContext(Auth);
+  const token = await user.getIdToken();
+  return (await axios.post(url, { token })).data;
 };
 
-const Config: React.FC<ConfigProps> = ({ list }) => {
+const Config: React.FC<ConfigProps> = () => {
   const router = useRouter();
-  const { data, error } = useSWR("/api/getElojob");
+  const { data, error } = useSWR("/api/getElojob", fetcher);
   const [modalidade, setModalidade] = useState<number>(1);
   const [elojob, setElojob] = useState([]);
   const [modalShow, setModalShow] = useState(false);

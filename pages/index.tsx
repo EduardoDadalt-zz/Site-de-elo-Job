@@ -19,12 +19,12 @@ export default function Home() {
           styles.section + " position-relative " + styles.backgroundSpace
         }
       >
-        <Image
+        <img
           src="/bg.gif"
-          layout="fill"
-          objectFit="cover"
-          quality={100}
-          objectPosition="50% 50%"
+          style={{
+            objectFit: "cover",
+            objectPosition: "50% 50%",
+          }}
         />
         <Row className="w-100 h-100 position-relative text-white">
           <Col></Col>
