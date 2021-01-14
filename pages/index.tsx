@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { Button, Card, CardDeck, Col, Container, Row } from "react-bootstrap";
 import styles from "../styles/home.module.css";
 export default function Home() {
-  const router = useRouter();
   return (
     <>
       <Head>
