@@ -42,7 +42,7 @@ export default function Home() {
         </Row>
       </section>
       <section>
-        <Container className="my-4">
+        <Container fluid="xl" className="my-2">
           <CardDeck>
             {[
               {
