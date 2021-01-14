@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { Button, Card, CardDeck, Col, Container, Row } from "react-bootstrap";
 import styles from "../styles/home.module.css";
@@ -19,13 +20,6 @@ export default function Home() {
           styles.section + " position-relative " + styles.backgroundSpace
         }
       >
-        {/* <Image
-          src="/bg.gif"
-          objectFit="cover"
-          objectPosition="50% 50%"
-          layout="fill"
-          quality={100}
-        /> */}
         <img
           src="/bg.gif"
           style={{
@@ -40,7 +34,8 @@ export default function Home() {
           <Col></Col>
           <Col
             sm={4}
-            className="d-flex justify-content-center align-items-center"
+            className="d-flex justify-content-center align-items-center mx-2"
+            style={{ flexDirection: "column" }}
           >
             <h1
               style={{
@@ -51,6 +46,9 @@ export default function Home() {
             >
               Turbine seu Elo
             </h1>
+            <Link href="/elojob">
+              <Button className="btn-block">Peça Já</Button>
+            </Link>
           </Col>
         </Row>
       </section>
