@@ -32,8 +32,8 @@ const Config: React.FC<ConfigProps> = () => {
   const [elojob, setElojob] = useState([]);
   const [options, setOptions] = useState({
     modalidade: "1",
-    concluido: false,
-    recusado: false,
+    concluido: true,
+    recusado: true,
   });
   const [modalShow, setModalShow] = useState(false);
   const [modalOptions, setModalOptions] = useState<any>({});
