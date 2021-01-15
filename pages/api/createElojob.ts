@@ -36,6 +36,7 @@ export default async function handler(
         partidasAvulsas,
         options,
         filaRanqueada,
+        optionValues,
       } = req.body.value;
       await FBAdmin.database()
         .ref("elojob/" + uid)
@@ -47,6 +48,7 @@ export default async function handler(
           options,
           filaRanqueada,
           status: "Em Análise",
+          optionValues,
           price,
         });
       const { PasswordLol, UsernameLol, name, whatsapp } = req.body;
@@ -75,6 +77,7 @@ function VerifiqueTodosOsCampos(body: any) {
       partidasAvulsas,
       options,
       filaRanqueada,
+      optionValues,
     } = value;
     const eloAtualIndex =
       eloAtual && eloAtual.elo && eloAtual.tier
@@ -91,7 +94,6 @@ function VerifiqueTodosOsCampos(body: any) {
           )
         : -1;
 
-    console.log({ eloAtualIndex, eloRequeridoIndex });
 
     if (
       modalidade > 0 &&
@@ -101,7 +103,7 @@ function VerifiqueTodosOsCampos(body: any) {
         modalidade < 3 &&
         eloRequeridoIndex !== -1 &&
         eloAtualIndex < eloRequeridoIndex) ||
-        (modalidade === 3 && partidasAvulsas > 0 && partidasAvulsas < 21)) &&
+        (modalidade == 3 && partidasAvulsas > 0 && partidasAvulsas < 21)) &&
       options &&
       filaRanqueada
     ) {

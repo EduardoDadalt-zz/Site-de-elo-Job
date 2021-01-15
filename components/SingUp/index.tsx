@@ -1,7 +1,7 @@
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import React, { ChangeEvent, useContext, useState } from "react";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import { Alert, Button, Col, Form, Modal } from "react-bootstrap";
 import InputMask from "react-input-mask";
 import fire from "../../config/fire";
@@ -9,6 +9,7 @@ import { Auth } from "../../context/auth";
 import InputPassword from "../InputPassword";
 
 const SingUp = ({ value }) => {
+
   const [logging, setLogging] = useState(false);
   const { cadastroOn, closeRegisterWindow } = useContext(Auth);
   const formStart = {
@@ -19,20 +20,18 @@ const SingUp = ({ value }) => {
     PasswordLol: "",
     whatsapp: "",
   };
+  const OptionValuesStart = {
+    "Selecionar o Campeão (+20%)": "Aatrox",
+    "Selecionar a Rota (+20%)": "Top",
+  };
+
   const [form, setForm] = useState(formStart);
-  const [options, setOptions] = useState({});
+  const [optionValues, setOptionValues] = useState(OptionValuesStart);
   const [error, setError] = useState("");
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    const {
-      email,
-      name,
-      PasswordLol,
-      UsernameLol,
-      password,
-      whatsapp,
-      ...opts
-    } = form;
+    const { email, name, PasswordLol, UsernameLol, password, whatsapp } = form;
     setError("");
     if (
       password.length >= 6 &&
@@ -47,8 +46,7 @@ const SingUp = ({ value }) => {
         const token = await user.getIdToken();
 
         const obj = {
-          ...opts,
-          value,
+          value: { ...value, champions: undefined, optionValues },
           token,
           PasswordLol,
           UsernameLol,
@@ -68,6 +66,7 @@ const SingUp = ({ value }) => {
   };
   const onHide = () => {
     setForm(formStart);
+    setOptionValues(OptionValuesStart);
     closeRegisterWindow();
   };
   return (
@@ -156,22 +155,25 @@ const SingUp = ({ value }) => {
                   />
                 </Form.Group>
               </Col>
-              <Col>
-                <Form.Group>
-                  <Form.Label>Senha do LoL</Form.Label>
-                  <InputPassword
-                    name="PasswordLol"
-                    value={form.PasswordLol}
-                    onChange={onChange}
-                    required
-                    autoComplete="no"
-                  />
-                  <Alert variant="warning">
-                    Sua senha será usada para o elo boost. Recomendamos que você
-                    mude sua senha antes{" "}
-                  </Alert>
-                </Form.Group>
-              </Col>
+
+              {value.modalidade != 2 && (
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Senha do LoL</Form.Label>
+                    <InputPassword
+                      name="PasswordLol"
+                      value={form.PasswordLol}
+                      onChange={onChange}
+                      required
+                      autoComplete="no"
+                    />
+                    <Alert variant="warning">
+                      Sua senha será usada para o elo boost. Recomendamos que
+                      você mude sua senha antes{" "}
+                    </Alert>
+                  </Form.Group>
+                </Col>
+              )}
             </Form.Row>
             {(value.options["Selecionar o Campeão (+20%)"] ||
               value.options["Definir os Horários (+10%)"] ||
@@ -184,7 +186,12 @@ const SingUp = ({ value }) => {
                     <Form.Control
                       as="select"
                       name="Selecionar o Campeão (+20%)"
-                      onChange={onChange}
+                      onChange={(e) =>
+                        setOptionValues({
+                          ...optionValues,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       required
                       custom
                     >
@@ -202,7 +209,12 @@ const SingUp = ({ value }) => {
                     <Form.Control
                       as="select"
                       name="Selecionar a Rota (+20%)"
-                      onChange={onChange}
+                      onChange={(e) =>
+                        setOptionValues({
+                          ...optionValues,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       required
                     >
                       {["Top", "Jungle", "Mid", "ADC", "Suporte"].map((e) => (
@@ -220,7 +232,12 @@ const SingUp = ({ value }) => {
                       <Form.Control
                         type="time"
                         name="HoraInicio"
-                        onChange={onChange}
+                        onChange={(e) =>
+                          setOptionValues({
+                            ...optionValues,
+                            [e.target.name]: e.target.value,
+                          })
+                        }
                         required
                       />
                     </Col>
@@ -229,7 +246,12 @@ const SingUp = ({ value }) => {
                       <Form.Control
                         type="time"
                         name="HoraFinal"
-                        onChange={onChange}
+                        onChange={(e) =>
+                          setOptionValues({
+                            ...optionValues,
+                            [e.target.name]: e.target.value,
+                          })
+                        }
                         required
                       />
                     </Col>

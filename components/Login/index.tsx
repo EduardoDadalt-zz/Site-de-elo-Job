@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Modal } from "react-bootstrap";
 import { Auth } from "../../context/auth";
-import SingIn from "./SingIn";
+import SingIn from "../SingIn/SingIn";
 
 const Login = () => {
   const { showLoginModal, closeLoginWindow } = useContext(Auth);

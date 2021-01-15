@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
 import useSWR from "swr";
 import CheckBoxs from "../components/CheckBox";
-import SingIn from "../components/Login/SingIn";
+import SingIn from "../components/SingIn/SingIn";
 import { Auth } from "../context/auth";
 import { getDataFromDatabase } from "../utils/getDataFromDatabase";
 const Pedido = () => {

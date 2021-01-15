@@ -1,8 +1,6 @@
-import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -14,6 +12,7 @@ import {
 } from "react-bootstrap";
 import useSWR from "swr";
 import CheckBoxs from "../components/CheckBox";
+import SingIn from "../components/SingIn/SingIn";
 import { Auth } from "../context/auth";
 
 interface listObj {
@@ -23,35 +22,45 @@ interface ConfigProps {
   list: listObj[];
 }
 
-const fetcher = async (url: string) => {
-  const { user } = useContext(Auth);
-  const token = await user.getIdToken();
-  return (await axios.post(url, { token })).data;
-};
-
 const Config: React.FC<ConfigProps> = () => {
-  const router = useRouter();
-  const { data, error } = useSWR("/api/getElojob", fetcher);
+  const { user } = useContext(Auth);
+
+  const [token, setToken] = useState("");
+  const { data, error } = useSWR(token ? "/api/getElojob?t=" + token : null);
   const [modalidade, setModalidade] = useState<number>(1);
   const [elojob, setElojob] = useState([]);
   const [modalShow, setModalShow] = useState(false);
-  const [modalOptions, setModalOptions] = useState({});
-
+  const [modalOptions, setModalOptions] = useState<any>({});
+  const [modalUserShow, setModalUserShow] = useState(false);
+  const [modalUser, setModalUser] = useState({
+    UsernameLol: "",
+    PasswordLol: "",
+  });
+  useEffect(() => {
+    if (user) {
+      (async () => {
+        const token = await user.getIdToken();
+        setToken(token);
+      })();
+    }
+  }, [user]);
   useEffect(() => {
     if (data) {
-      for (const key in data) {
-        let arr = [];
-        arr.push({ key, ...data[key] });
-        setElojob(arr);
-      }
+      setElojob(data);
     }
   }, [data]);
   if (error) {
-    router.push("/");
     return (
-      <Container>
-        <Alert variant="danger">Algo deu Errado :C</Alert>
-      </Container>
+      <>
+        <Container>
+          <Alert variant="danger">Algo deu Errado :C</Alert>
+        </Container>
+        {!user && (
+          <Container>
+            <SingIn />
+          </Container>
+        )}
+      </>
     );
   }
   if (!data) {
@@ -74,11 +83,51 @@ const Config: React.FC<ConfigProps> = () => {
         }}
         centered
       >
-        <Modal.Body>
-          <CheckBoxs options={modalOptions} onChange={() => {}} />
+        <Modal.Body className="">
+          <CheckBoxs
+            options={modalOptions?.options ?? {}}
+            onChange={() => {}}
+          />
+          <div>
+            {(() => {
+              let a = new Array<ReactNode>();
+              for (const key in modalOptions?.optionValues) {
+                a.push(
+                  <div className="d-flex align-items-center justify-content-between">
+                    <h4>{key + ": "}</h4>
+                    {modalOptions?.optionValues[key]}
+                  </div>
+                );
+              }
+              return a;
+            })()}
+          </div>
         </Modal.Body>
       </Modal>
-      <Container fluid="xl">
+      <Modal
+        show={modalUserShow}
+        onHide={() => {
+          setModalUserShow(false);
+        }}
+        centered
+      >
+        <Modal.Body>
+          {(() => {
+            let a = new Array<React.ReactNode>();
+            for (const key in modalUser) {
+              a.push(
+                <div className="d-flex align-items-center justify-content-between">
+                  <h4>{key + ": "}</h4>
+                  {modalUser[key]}
+                </div>
+              );
+            }
+            return a;
+          })()}
+        </Modal.Body>
+      </Modal>
+      <Container className="border border-dark rounded">
+        <h2>Filtros</h2>
         <Form.Group>
           <Form.Label>Modalidade</Form.Label>
           <Form.Control
@@ -94,6 +143,11 @@ const Config: React.FC<ConfigProps> = () => {
             ))}
           </Form.Control>
         </Form.Group>
+        <Form.Group>
+          <Form.Check label="Ocultar os Concluidos"></Form.Check>
+        </Form.Group>
+      </Container>
+      <Container fluid="xl">
         <Table>
           <thead>
             <tr>
@@ -106,11 +160,12 @@ const Config: React.FC<ConfigProps> = () => {
               </th>
               <th>Opções</th>
               <th>Status</th>
+              <th>User</th>
             </tr>
           </thead>
           <tbody>
             {elojob
-              // .filter((f) => f.modalidade == modalidade)
+              .filter((f) => f.modalidade == modalidade)
               .map((e) => (
                 <tr key={e.key}>
                   <td key={"price:" + e.key}>
@@ -132,7 +187,7 @@ const Config: React.FC<ConfigProps> = () => {
                   </td>
                   <td key={"eloRequerido:" + e.key}>
                     <div className="d-flex align-items-center">
-                      {e.eloRequerido && (
+                      {e?.eloRequerido?.elo && e?.eloRequerido?.img && (
                         <>
                           <Image
                             src={e.eloRequerido.img}
@@ -151,7 +206,8 @@ const Config: React.FC<ConfigProps> = () => {
                     <Button
                       variant="outline-dark"
                       onClick={() => {
-                        setModalOptions(e.options);
+                        const { options, optionValues } = e;
+                        setModalOptions({ options, optionValues });
                         setModalShow(true);
                       }}
                     >
@@ -160,12 +216,23 @@ const Config: React.FC<ConfigProps> = () => {
                   </td>
                   <td key={"status:" + e.key}>
                     <Form.Control as="select" defaultValue={e.status} custom>
-                      {["Em Análise", "Em Andamento", "Concluído"].map((f) => (
+                      {["Em Análise", "Em Progesso", "Concluído"].map((f) => (
                         <option key={e.key + f} value={f}>
                           {f}
                         </option>
                       ))}
                     </Form.Control>
+                  </td>
+                  <td>
+                    <Button
+                      variant="outline-dark"
+                      onClick={() => {
+                        setModalUser(e.user);
+                        setModalUserShow(true);
+                      }}
+                    >
+                      Usuário
+                    </Button>
                   </td>
                 </tr>
               ))}

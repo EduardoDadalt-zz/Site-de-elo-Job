@@ -354,16 +354,16 @@ function Elojob({ precoPorTierDuoBoost, precoPorTier, champions }) {
                     }
                     if (
                       modalidade > 0 &&
-                      modalidade < 3 &&
+                      modalidade < 4 &&
                       !!eloAtual &&
-                      !!eloRequerido &&
                       !!filaRanqueada &&
                       eloAtualIndex !== -1 &&
-                      eloRequeridoIndex !== -1 &&
-                      eloAtualIndex < eloRequeridoIndex
+                      ((eloRequeridoIndex !== -1 &&
+                        !!eloRequerido &&
+                        eloAtualIndex < eloRequeridoIndex) ||
+                        partidasAvulsas)
                     ) {
                       openRegisterWindow();
-                    } else if (modalidade === 3) {
                     }
                   }}
                 >
@@ -410,7 +410,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       for (const key in championList.data) {
         arr.push(championList.data[key].name);
       }
-      return arr;
+      return arr.sort();
     });
 
   const array = await Promise.all([
