@@ -56,9 +56,6 @@ const Config: React.FC<ConfigProps> = () => {
       setElojob(data);
     }
   }, [data]);
-  useEffect(() => {
-    console.log(options);
-  }, [options]);
   if (error) {
     return (
       <>
@@ -280,7 +277,6 @@ const Config: React.FC<ConfigProps> = () => {
                                 );
                                 if (i === -1) return prevState;
                                 prevState[i].status = f.target.value;
-                                console.log(prevState[i]);
                                 return prevState;
                               }
                               return prevState;
