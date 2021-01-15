@@ -26,3 +26,6 @@ body {
   font-weight: bold;
   line-height: 5;
 }
+div > input:disabled:checked + label {
+  color: rgb(136, 136, 136) !important;
+}

@@ -95,13 +95,14 @@ const CardPlan = ({ card }) => {
         width={100}
         variant="top"
       />
-      <Card.Body>
+      <Card.Body className="d-flex align-content-center justify-content-between flex-column">
         <Card.Text>{card.text}</Card.Text>
         <Button
           onClick={() => {
             router.push("/elojob?modalidade=" + (card.index + 1));
           }}
-          className="btn-block"
+          className="btn-block btn-lg "
+          style={{ bottom: 0 }}
           variant="primary"
         >
           Peça já
