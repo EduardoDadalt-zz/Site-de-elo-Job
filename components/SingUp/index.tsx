@@ -1,7 +1,7 @@
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import React, { ChangeEvent, useContext, useEffect, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import { Alert, Button, Col, Form, Modal } from "react-bootstrap";
 import InputMask from "react-input-mask";
 import fire from "../../config/fire";
@@ -9,7 +9,6 @@ import { Auth } from "../../context/auth";
 import InputPassword from "../InputPassword";
 
 const SingUp = ({ value }) => {
-
   const [logging, setLogging] = useState(false);
   const { cadastroOn, closeRegisterWindow } = useContext(Auth);
   const formStart = {
@@ -21,8 +20,12 @@ const SingUp = ({ value }) => {
     whatsapp: "",
   };
   const OptionValuesStart = {
-    "Selecionar o Campeão (+20%)": "Aatrox",
-    "Selecionar a Rota (+20%)": "Top",
+    "Selecionar o Campeão (+20%)": value.options["Selecionar o Campeão (+20%)"]
+      ? "Aatrox"
+      : undefined,
+    "Selecionar a Rota (+20%)": value.options["Selecionar a Rota (+20%)"]
+      ? "Top"
+      : undefined,
   };
 
   const [form, setForm] = useState(formStart);

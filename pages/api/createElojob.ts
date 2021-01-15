@@ -2,10 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import FBAdmin from "../../admin/admin";
 import { eloETier } from "../../config/eloETier";
 import { getPrice } from "../../config/getPrice";
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (VerifiqueTodosOsCampos(req.body)) {
     try {
       let { uid } = await FBAdmin.auth().verifyIdToken(req.body.token);
@@ -60,16 +57,25 @@ export default async function handler(
       res.statusCode = 200;
       return res.send("OK");
     } catch (error) {
-      res.statusCode = 400;
+      delectAccount(req.body?.token);
+      res.statusCode = 500;
       return res.send("Deu Erro :C");
     }
   }
+  delectAccount(req.body?.token);
   res.statusCode = 400;
   return res.send("Deu Erro :C");
-}
-function VerifiqueTodosOsCampos(body: any) {
+};
+const VerifiqueTodosOsCampos = (body: any) => {
   const { token, PasswordLol, UsernameLol, name, whatsapp, value } = body;
-  if (token && PasswordLol && UsernameLol && name && whatsapp && value) {
+  if (
+    token &&
+    (value.modalidade == 2 || PasswordLol) &&
+    UsernameLol &&
+    name &&
+    whatsapp &&
+    value
+  ) {
     let {
       modalidade,
       eloAtual,
@@ -77,7 +83,6 @@ function VerifiqueTodosOsCampos(body: any) {
       partidasAvulsas,
       options,
       filaRanqueada,
-      optionValues,
     } = value;
     const eloAtualIndex =
       eloAtual && eloAtual.elo && eloAtual.tier
@@ -93,7 +98,6 @@ function VerifiqueTodosOsCampos(body: any) {
             (f) => f.elo === eloRequerido.elo && f.tier === eloRequerido.tier
           )
         : -1;
-
 
     if (
       modalidade > 0 &&
@@ -111,4 +115,13 @@ function VerifiqueTodosOsCampos(body: any) {
     }
   }
   return false;
-}
+};
+const delectAccount = async (token: string) => {
+  try {
+    let { uid } = await FBAdmin.auth().verifyIdToken(token);
+    await FBAdmin.auth().deleteUser(uid);
+    console.log("Deletou a conta");
+  } catch (e) {
+    console.log("Não deletou conta");
+  }
+};

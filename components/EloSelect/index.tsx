@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { memo } from "react";
 import { Button, ButtonGroup, Card } from "react-bootstrap";
 import styles from "./styles.module.css";
 
@@ -87,4 +87,4 @@ function MasterCard({ elo, img, value }) {
     </Card>
   );
 }
-export default EloSelect;
+export default memo(EloSelect);

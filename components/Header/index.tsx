@@ -51,7 +51,7 @@ function Header() {
           ) : (
             <NavDropdown
               className="btn btn-outline-dark p-0"
-              title={user.displayName}
+              title={user.displayName || ""}
               id="basic-nav-dropdown"
             >
               <Link href="/pedido">

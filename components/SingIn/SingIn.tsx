@@ -1,11 +1,10 @@
-import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import fire from "../../config/fire";
 import { Auth } from "../../context/auth";
 
 const SingIn = () => {
-  const {  closeLoginWindow } = useContext(Auth);
+  const { closeLoginWindow } = useContext(Auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (

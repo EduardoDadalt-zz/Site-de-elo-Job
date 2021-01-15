@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { memo, useState } from "react";
-import { FormControl, FormControlProps, InputGroup } from "react-bootstrap";
+import { FormControl, InputGroup } from "react-bootstrap";
 
 const InputPassword = ({ name, value, ...opts }) => {
   const [visible, setVisible] = useState(false);

@@ -1,9 +1,12 @@
+import axios from "axios";
+import { log } from "console";
 import Head from "next/head";
 import Image from "next/image";
-import { ReactNode, useContext, useEffect, useState } from "react";
+import { ChangeEvent, ReactNode, useContext, useEffect, useState } from "react";
 import {
   Alert,
   Button,
+  Col,
   Container,
   Form,
   Modal,
@@ -24,11 +27,14 @@ interface ConfigProps {
 
 const Config: React.FC<ConfigProps> = () => {
   const { user } = useContext(Auth);
-
   const [token, setToken] = useState("");
   const { data, error } = useSWR(token ? "/api/getElojob?t=" + token : null);
-  const [modalidade, setModalidade] = useState<number>(1);
   const [elojob, setElojob] = useState([]);
+  const [options, setOptions] = useState({
+    modalidade: "1",
+    concluido: false,
+    recusado: false,
+  });
   const [modalShow, setModalShow] = useState(false);
   const [modalOptions, setModalOptions] = useState<any>({});
   const [modalUserShow, setModalUserShow] = useState(false);
@@ -36,6 +42,7 @@ const Config: React.FC<ConfigProps> = () => {
     UsernameLol: "",
     PasswordLol: "",
   });
+
   useEffect(() => {
     if (user) {
       (async () => {
@@ -49,6 +56,9 @@ const Config: React.FC<ConfigProps> = () => {
       setElojob(data);
     }
   }, [data]);
+  useEffect(() => {
+    console.log(options);
+  }, [options]);
   if (error) {
     return (
       <>
@@ -126,26 +136,44 @@ const Config: React.FC<ConfigProps> = () => {
           })()}
         </Modal.Body>
       </Modal>
-      <Container className="border border-dark rounded">
+      <Container className="border border-dark rounded mb-3" fluid="sm">
         <h2>Filtros</h2>
         <Form.Group>
           <Form.Label>Modalidade</Form.Label>
           <Form.Control
             as="select"
             custom
-            value={modalidade}
-            onChange={(e) => setModalidade(Number(e.target.value))}
+            value={options.modalidade}
+            onChange={(e) =>
+              setOptions({ ...options, modalidade: e.target.value })
+            }
           >
-            {["EloBoost", "DuoBoost", "Vitórias Avulsas"].map((e, x) => (
-              <option key={"option" + x} value={x + 1}>
-                {e}
-              </option>
-            ))}
+            {["Todos", "EloBoost", "DuoBoost", "Vitórias Avulsas"].map(
+              (e, x) => (
+                <option key={"option" + x} value={x}>
+                  {e}
+                </option>
+              )
+            )}
           </Form.Control>
         </Form.Group>
-        <Form.Group>
-          <Form.Check label="Ocultar os Concluidos"></Form.Check>
-        </Form.Group>
+        <Form.Row>
+          {["concluido", "recusado"].map((e) => (
+            <Col className="col-auto">
+              <Form.Check>
+                <Form.Check.Input
+                  checked={options[e]}
+                  onChange={(change: ChangeEvent<HTMLInputElement>) =>
+                    setOptions({ ...options, [e]: change.target.checked })
+                  }
+                />
+                <Form.Label>
+                  {"Ocultar os " + e.slice(0, 1).toUpperCase() + e.slice(1)}
+                </Form.Label>
+              </Form.Check>
+            </Col>
+          ))}
+        </Form.Row>
       </Container>
       <Container fluid="xl">
         <Table>
@@ -154,7 +182,7 @@ const Config: React.FC<ConfigProps> = () => {
               <th>Preço</th>
               <th>Elo Atual</th>
               <th>
-                {modalidade == 1 || modalidade == 2
+                {options.modalidade === "1" || options.modalidade === "2"
                   ? "Elo Requerido"
                   : "Vitórias Avulsas"}
               </th>
@@ -165,48 +193,67 @@ const Config: React.FC<ConfigProps> = () => {
           </thead>
           <tbody>
             {elojob
-              .filter((f) => f.modalidade == modalidade)
-              .map((e) => (
-                <tr key={e.key}>
-                  <td key={"price:" + e.key}>
-                    {Number(e.price).toLocaleString("pt-BR", {
+              .filter(
+                (f) =>
+                  (f.modalidade == options.modalidade ||
+                    options.modalidade == "0") &&
+                  (options.concluido ? f.status !== "Concluído" : true) &&
+                  (options.recusado ? f.status !== "Recusado" : true)
+              )
+              .map((elojob) => (
+                <tr key={elojob.key}>
+                  <td key={"price:" + elojob.key}>
+                    {Number(elojob.price).toLocaleString("pt-BR", {
                       style: "currency",
                       currency: "BRL",
                     })}
                   </td>
-                  <td key={"eloAtual:" + e.key}>
+                  <td key={"eloAtual:" + elojob.key}>
                     <div className="d-flex align-items-center">
-                      <Image
-                        src={e.eloAtual.img}
-                        height={30}
-                        width={30}
-                        objectFit="cover"
-                      />
-                      <span>{e.eloAtual.elo + " " + e.eloAtual.tier}</span>
-                    </div>
-                  </td>
-                  <td key={"eloRequerido:" + e.key}>
-                    <div className="d-flex align-items-center">
-                      {e?.eloRequerido?.elo && e?.eloRequerido?.img && (
+                      {elojob?.eloAtual?.img && elojob?.eloAtual?.elo && (
                         <>
                           <Image
-                            src={e.eloRequerido.img}
+                            src={elojob.eloAtual.img}
                             height={30}
                             width={30}
                             objectFit="cover"
                           />
                           <span>
-                            {e.eloRequerido.elo + " " + e.eloRequerido.tier}
+                            {elojob.eloAtual.elo + " " + elojob.eloAtual.tier}
                           </span>
                         </>
                       )}
                     </div>
                   </td>
-                  <td>
+                  <td key={"eloRequerido:" + elojob.key}>
+                    <div className="d-flex align-items-center">
+                      {elojob?.eloRequerido?.elo && elojob?.eloRequerido?.img && (
+                        <>
+                          <Image
+                            src={elojob.eloRequerido.img}
+                            height={30}
+                            width={30}
+                            objectFit="cover"
+                          />
+                          <span>
+                            {elojob.eloRequerido.elo +
+                              " " +
+                              elojob.eloRequerido.tier}
+                          </span>
+                        </>
+                      )}
+                      {elojob?.modalidade == 3 && elojob?.partidasAvulsas && (
+                        <h5 className="text-center w-100">
+                          {elojob.partidasAvulsas}
+                        </h5>
+                      )}
+                    </div>
+                  </td>
+                  <td key={"options:" + elojob.key}>
                     <Button
                       variant="outline-dark"
                       onClick={() => {
-                        const { options, optionValues } = e;
+                        const { options, optionValues } = elojob;
                         setModalOptions({ options, optionValues });
                         setModalShow(true);
                       }}
@@ -214,20 +261,51 @@ const Config: React.FC<ConfigProps> = () => {
                       Opções
                     </Button>
                   </td>
-                  <td key={"status:" + e.key}>
-                    <Form.Control as="select" defaultValue={e.status} custom>
-                      {["Em Análise", "Em Progesso", "Concluído"].map((f) => (
-                        <option key={e.key + f} value={f}>
+                  <td key={"status:" + elojob.key}>
+                    <Form.Control
+                      as="select"
+                      defaultValue={elojob.status}
+                      onChange={async (f) =>
+                        axios
+                          .post("/api/changeStatus", {
+                            token: await user.getIdToken(),
+                            id: elojob.key,
+                            value: f.target.value,
+                          })
+                          .then(() => {
+                            setElojob((prevState) => {
+                              if (Array.isArray(prevState)) {
+                                let i = prevState.findIndex(
+                                  (c) => c.key === elojob.key
+                                );
+                                if (i === -1) return prevState;
+                                prevState[i].status = f.target.value;
+                                console.log(prevState[i]);
+                                return prevState;
+                              }
+                              return prevState;
+                            });
+                          })
+                      }
+                      custom
+                    >
+                      {[
+                        "Em Análise",
+                        "Em Progesso",
+                        "Concluído",
+                        "Recusado",
+                      ].map((f) => (
+                        <option key={elojob.key + f} value={f}>
                           {f}
                         </option>
                       ))}
                     </Form.Control>
                   </td>
-                  <td>
+                  <td key={"user:" + elojob.key}>
                     <Button
                       variant="outline-dark"
                       onClick={() => {
-                        setModalUser(e.user);
+                        setModalUser(elojob.user);
                         setModalUserShow(true);
                       }}
                     >

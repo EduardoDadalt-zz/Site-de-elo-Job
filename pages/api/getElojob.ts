@@ -1,11 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import FBAdmin from "../../admin/admin";
+import uidAdmin from "../../config/uidAdmin";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { uid } = await FBAdmin.auth().verifyIdToken(String(req.query?.t));
-    if (uid !== "oMBIO8MU1VUvq1iIhn7SV94VKhm1") {
-      res.statusCode = 400;
+    if (!uidAdmin.includes(uid)) {
+      res.statusCode = 401;
       return res.end();
     }
 
