@@ -33,7 +33,7 @@ const Config: React.FC<ConfigProps> = () => {
   const { data, error } = useSWR("/api/getElojob?t=" + token);
   const [elojob, setElojob] = useState([]);
   const [options, setOptions] = useState({
-    modalidade: "1",
+    modalidade: "0",
     concluido: true,
     recusado: true,
   });
