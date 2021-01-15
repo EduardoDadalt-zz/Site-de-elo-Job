@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import {
   Button,
@@ -8,14 +9,13 @@ import {
   Form,
   Nav,
   Navbar,
-  NavDropdown,
 } from "react-bootstrap";
 import fire from "../../config/fire";
 import { Auth } from "../../context/auth";
 import Login from "../Login";
 function Header() {
   const { openLoginWindow, user } = useContext(Auth);
-
+  const router = useRouter();
   return (
     <>
       <Navbar variant="light" expand="sm">
@@ -29,18 +29,24 @@ function Header() {
               className="rounded"
               alt="logo"
             />
-            <Navbar.Text>Galaxy Job</Navbar.Text>
+            <span className="ml-2">Galaxy Job</span>
           </Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Link href="/">
-              <Nav.Link as="a">Home</Nav.Link>
-            </Link>
+            {/* {JSON.stringify(router)} */}
             {["Elo Booster", "Duo Booster", "Vitórias Avulsas"].map((e, x) => (
               <Link key={e} href={"/elojob?modalidade=" + (x + 1)}>
-                <Nav.Link as="a">{e}</Nav.Link>
+                <Nav.Link
+                  as="a"
+                  active={
+                    "/elojob?modalidade=" + (x + 1) === router.asPath ||
+                    (x + 1 === 1 && "/elojob" === router.asPath)
+                  }
+                >
+                  {e}
+                </Nav.Link>
               </Link>
             ))}
           </Nav>
