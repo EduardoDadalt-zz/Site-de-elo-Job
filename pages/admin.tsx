@@ -4,8 +4,10 @@ import Head from "next/head";
 import Image from "next/image";
 import { ChangeEvent, ReactNode, useContext, useEffect, useState } from "react";
 import {
+  Accordion,
   Alert,
   Button,
+  Card,
   Col,
   Container,
   Form,
@@ -27,8 +29,8 @@ interface ConfigProps {
 
 const Config: React.FC<ConfigProps> = () => {
   const { user } = useContext(Auth);
-  const [token, setToken] = useState("");
-  const { data, error } = useSWR(token ? "/api/getElojob?t=" + token : null);
+  const [token, setToken] = useState("1");
+  const { data, error } = useSWR("/api/getElojob?t=" + token);
   const [elojob, setElojob] = useState([]);
   const [options, setOptions] = useState({
     modalidade: "1",
@@ -133,44 +135,61 @@ const Config: React.FC<ConfigProps> = () => {
           })()}
         </Modal.Body>
       </Modal>
-      <Container className="border border-dark rounded mb-3" fluid="sm">
-        <h2>Filtros</h2>
-        <Form.Group>
-          <Form.Label>Modalidade</Form.Label>
-          <Form.Control
-            as="select"
-            custom
-            value={options.modalidade}
-            onChange={(e) =>
-              setOptions({ ...options, modalidade: e.target.value })
-            }
-          >
-            {["Todos", "EloBoost", "DuoBoost", "Vitórias Avulsas"].map(
-              (e, x) => (
-                <option key={"option" + x} value={x}>
-                  {e}
-                </option>
-              )
-            )}
-          </Form.Control>
-        </Form.Group>
-        <Form.Row>
-          {["concluido", "recusado"].map((e) => (
-            <Col className="col-auto">
-              <Form.Check>
-                <Form.Check.Input
-                  checked={options[e]}
-                  onChange={(change: ChangeEvent<HTMLInputElement>) =>
-                    setOptions({ ...options, [e]: change.target.checked })
-                  }
-                />
-                <Form.Label>
-                  {"Ocultar os " + e.slice(0, 1).toUpperCase() + e.slice(1)}
-                </Form.Label>
-              </Form.Check>
-            </Col>
-          ))}
-        </Form.Row>
+      <Container fluid="sm">
+        <Accordion className="border border-dark rounded mb-3">
+          <Card>
+            <Card.Header>
+              <Accordion.Toggle as="h4" eventKey="0">
+                Filtros
+              </Accordion.Toggle>
+            </Card.Header>
+            <Accordion.Collapse eventKey="0">
+              <Card.Body>
+                <Form.Group>
+                  <Form.Label>Modalidade</Form.Label>
+                  <Form.Control
+                    as="select"
+                    custom
+                    value={options.modalidade}
+                    onChange={(e) =>
+                      setOptions({ ...options, modalidade: e.target.value })
+                    }
+                  >
+                    {["Todos", "EloBoost", "DuoBoost", "Vitórias Avulsas"].map(
+                      (e, x) => (
+                        <option key={"option" + x} value={x}>
+                          {e}
+                        </option>
+                      )
+                    )}
+                  </Form.Control>
+                </Form.Group>
+                <Form.Row>
+                  {["concluido", "recusado"].map((e) => (
+                    <Col className="col-auto">
+                      <Form.Check>
+                        <Form.Check.Input
+                          checked={options[e]}
+                          onChange={(change: ChangeEvent<HTMLInputElement>) =>
+                            setOptions({
+                              ...options,
+                              [e]: change.target.checked,
+                            })
+                          }
+                        />
+                        <Form.Label>
+                          {"Ocultar os " +
+                            e.slice(0, 1).toUpperCase() +
+                            e.slice(1)}
+                        </Form.Label>
+                      </Form.Check>
+                    </Col>
+                  ))}
+                </Form.Row>
+              </Card.Body>
+            </Accordion.Collapse>
+          </Card>
+        </Accordion>
       </Container>
       <Container fluid="xl">
         <Table>

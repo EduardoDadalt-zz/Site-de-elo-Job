@@ -1,7 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useContext } from "react";
-import { Button, Form, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import {
+  Button,
+  Dropdown,
+  DropdownButton,
+  Form,
+  Nav,
+  Navbar,
+  NavDropdown,
+} from "react-bootstrap";
 import fire from "../../config/fire";
 import { Auth } from "../../context/auth";
 import Login from "../Login";
@@ -49,23 +57,24 @@ function Header() {
               </Button>
             </Form>
           ) : (
-            <NavDropdown
-              className="btn btn-outline-dark p-0"
+            <DropdownButton
+              menuAlign="right"
+              variant="outline-dark"
               title={user.displayName || ""}
               id="basic-nav-dropdown"
             >
               <Link href="/pedido">
-                <NavDropdown.Item as="a">Meu Pedido</NavDropdown.Item>
+                <Dropdown.Item as="a">Meu Pedido</Dropdown.Item>
               </Link>
-              <NavDropdown.Item
+              <Dropdown.Item
                 as="button"
                 onClick={(e) => {
                   fire.auth().signOut();
                 }}
               >
                 Sair
-              </NavDropdown.Item>
-            </NavDropdown>
+              </Dropdown.Item>
+            </DropdownButton>
           )}
         </Navbar.Collapse>
       </Navbar>
