@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Spinner } from "react-bootstrap";
 import fire from "../../config/fire";
 import { Auth } from "../../context/auth";
 
@@ -7,19 +7,25 @@ const SingIn = () => {
   const { closeLoginWindow } = useContext(Auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   return (
     <Form
       onSubmit={(e) => {
         e.preventDefault();
-        fire
-          .auth()
-          .signInWithEmailAndPassword(email, password)
-          .then((e) => {
-            closeLoginWindow();
-          })
-          .catch((err) => {
-            console.error(err);
-          });
+        if (!loading) {
+          setLoading(true);
+          fire
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .then((e) => {
+              closeLoginWindow();
+              setLoading(false);
+            })
+            .catch((err) => {
+              console.error(err);
+              setLoading(false);
+            });
+        }
       }}
     >
       <Form.Group>
@@ -45,8 +51,8 @@ const SingIn = () => {
         />
       </Form.Group>
       <Form.Group>
-        <Button type="submit" variant="primary">
-          Entrar
+        <Button type="submit" variant="primary" className="btn-block" disabled={loading}>
+          {loading ? <Spinner animation="border" /> : "Entrar"}
         </Button>
       </Form.Group>
     </Form>

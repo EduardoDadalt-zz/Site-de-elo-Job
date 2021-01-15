@@ -2,14 +2,15 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React, { ChangeEvent, useContext, useState } from "react";
-import { Alert, Button, Col, Form, Modal } from "react-bootstrap";
+import { Alert, Button, Col, Form, Modal, Spinner } from "react-bootstrap";
 import InputMask from "react-input-mask";
 import fire from "../../config/fire";
 import { Auth } from "../../context/auth";
 import InputPassword from "../InputPassword";
 
 const SingUp = ({ value }) => {
-  const [logging, setLogging] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { cadastroOn, closeRegisterWindow } = useContext(Auth);
   const formStart = {
     email: "",
@@ -34,33 +35,43 @@ const SingUp = ({ value }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const { email, name, PasswordLol, UsernameLol, password, whatsapp } = form;
-    setError("");
-    if (
-      password.length >= 6 &&
-      password.search(/\W/g) === -1 &&
-      whatsapp.slice().replace(/\D/g, "").length === 11
-    ) {
-      try {
-        let { user } = await fire
-          .auth()
-          .createUserWithEmailAndPassword(email, password);
-        user.updateProfile({ displayName: name });
-        const token = await user.getIdToken();
+    if (!loading) {
+      setLoading(true);
+      const {
+        email,
+        name,
+        PasswordLol,
+        UsernameLol,
+        password,
+        whatsapp,
+      } = form;
+      setError("");
+      if (
+        password.length >= 6 &&
+        password.search(/\W/g) === -1 &&
+        whatsapp.slice().replace(/\D/g, "").length === 11
+      ) {
+        try {
+          let { user } = await fire
+            .auth()
+            .createUserWithEmailAndPassword(email, password);
+          user.updateProfile({ displayName: name });
+          const token = await user.getIdToken();
 
-        const obj = {
-          value: { ...value, champions: undefined, optionValues },
-          token,
-          PasswordLol,
-          UsernameLol,
-          name,
-          whatsapp,
-        };
+          const obj = {
+            value: { ...value, champions: undefined, optionValues },
+            token,
+            PasswordLol,
+            UsernameLol,
+            name,
+            whatsapp,
+          };
 
-        await axios.post("/api/createElojob", obj);
-        setLogging(true);
-      } catch (e) {
-        if (e.message) setError(e.message);
+          await axios.post("/api/createElojob", obj);
+          setSuccess(true);
+        } catch (e) {
+          if (e.message) setError(e.message);
+        }
       }
     }
   };
@@ -78,7 +89,7 @@ const SingUp = ({ value }) => {
         <h1>Cadastra-se</h1>
       </Modal.Header>
       <Modal.Body>
-        {!logging ? (
+        {!success ? (
           <Form onSubmit={onSubmit}>
             <Alert show={!!error} variant="danger">
               {error}
@@ -263,8 +274,13 @@ const SingUp = ({ value }) => {
               </Form.Group>
             )}
             <Form.Group>
-              <Button type="submit" variant="primary" style={{ width: "100%" }}>
-                Confirmar
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={loading}
+                className="btn-block"
+              >
+                {loading ? <Spinner animation="border" /> : "Confirmar"}
               </Button>
             </Form.Group>
           </Form>
