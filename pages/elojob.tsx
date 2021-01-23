@@ -425,7 +425,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       precoPorTierDuoBoost: array[1],
       champions: array[2],
     },
-    redirect: 86400,
+    revalidate: 86400,
   };
 };
 export default Elojob;
